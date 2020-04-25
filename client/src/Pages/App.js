@@ -1,4 +1,5 @@
 import React from "react";
+import Canvas from "./Canvas";
 
 class App extends React.Component {
   constructor(props) {
@@ -6,7 +7,11 @@ class App extends React.Component {
   }
 
   render() {
-    return <div className=""></div>;
+    return (
+      <div>
+        <Canvas />
+      </div>
+    );
   }
 }
 

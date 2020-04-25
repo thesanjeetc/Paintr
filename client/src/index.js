@@ -15,6 +15,10 @@ const routing = (
         path="/controller/:id"
         component={(props) => <Controller roomID={props.match.params.id} />}
       />
+      <Route
+        path="/canvas/:id"
+        component={(props) => <App roomID={props.match.params.id} />}
+      />
     </div>
   </Router>
 );
