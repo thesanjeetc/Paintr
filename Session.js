@@ -1,5 +1,10 @@
+var painters = {};
+var paths = {};
+
 class Controller {
   constructor(socket, session) {
+    this.depth = 600;
+
     this.session = session;
     this.handleConnect(socket);
 
@@ -12,26 +17,30 @@ class Controller {
 
   handleConnect(socket) {
     socket.join("controllers");
+    this.id = socket.id;
+    this.session.create(this.id);
   }
 
   handleDraw(data) {
-    console.log("Drawing is " + data);
+    this.session.draw(this.id, data);
   }
 
   handleCalibrate(data) {
-    console.log("Calibrated.");
+    this.session.calibrate(this.id);
   }
 
   handleDelete(data) {
-    console.log("Cleared.");
+    this.session.delete(this.id);
   }
 
   handleOrientation(quaternion) {
     let angles = this.toEuler(quaternion);
-    console.log(angles);
+    let dist = angles.map((angle, i) => {
+      let initAngle = painters[this.id].initAngle;
+      return this.calcDist(angle, initAngle[i]);
+    });
+    this.session.updatePos(this.id, angles, dist);
   }
-
-  // Wikipedia Implementation in JS
 
   toEuler(q) {
     let sinr_cosp = 2 * (q[3] * q[0] + q[1] * q[2]);
@@ -44,28 +53,126 @@ class Controller {
     return [yaw, roll];
   }
 
-  handleDisconnect() {
-    console.log("Disconnected.");
+  calcDist(angle, initAngle) {
+    angle = (angle - initAngle) * (180 / Math.PI);
+    angle = angle < 0 ? angle + 360 : angle;
+    angle = angle > 180 ? angle - 360 : angle;
+    let dist = Math.round(-this.depth * Math.tan(angle * (Math.PI / 180)));
+    return dist;
+  }
+
+  handleDisconnect(data) {
+    this.session.remove(this.id);
   }
 }
 
 class Canvas {
   constructor(socket, session) {
+    this.socket = socket;
     this.session = session;
+
     this.handleConnect(socket);
   }
 
   handleConnect(socket) {
     socket.join("canvases");
+    socket.emit("sync", Object.values(painters), Object.values(paths));
   }
+}
+
+function Painter() {
+  this.numCount = 0;
+  this.initAngle = [0, 0];
+  this.path = [];
+  this.drawNum = -1;
+  this.curPos = [0, 0];
+  this.colour = "";
+  this.initPos = [0, 0];
+  this.draw = 0;
 }
 
 class Session {
   constructor(socket, roomID) {
+    this.socket = socket;
+    this.roomID = roomID;
+
+    this.colours = [
+      "#f44336",
+      "#E91E63",
+      "#673AB7",
+      "#3F51B5",
+      "#03A9F4",
+      "#009688",
+      "#4CAF50",
+      "#FFEB3B",
+    ];
+
+    this.numPainters = 0;
+    this.painters = {};
+
+    setInterval(() => this.sync(), 30);
+
     socket.on("connection", (client) => {
       client.on("controller", () => new Controller(client, this));
-      client.on("canvas"), () => new Canvas(client, this);
+      client.on("canvas", () => new Canvas(client, this));
     });
+  }
+
+  sync() {
+    let payload = [Object.values(painters), Object.values(paths)];
+    this.socket.to("canvases").emit("sync", ...payload);
+  }
+
+  create(id) {
+    let painter = new Painter();
+    painters[id] = painter;
+    paths[id] = [];
+    this.numPainters += 1;
+    let colour = this.colours[this.numPainters - 1];
+    painters[id].colour = colour;
+    this.socket.to(id).emit("colour", colour);
+  }
+
+  getAttr(id, attr) {
+    return painters[id][attr];
+  }
+
+  updatePos(id, angles, dist) {
+    if (painters[id].numCount === 0) {
+      painters[id].initAngle = angles;
+      painters[id].initPos = dist;
+    } else {
+      painters[id].curPos = dist;
+      if (painters[id].draw) {
+        paths[id][painters[id].drawNum].push(dist);
+      }
+    }
+    painters[id].numCount += 1;
+  }
+
+  draw(id, state) {
+    if (state) {
+      painters[id].draw = true;
+      paths[id].push([]);
+      painters[id].drawNum += 1;
+    } else {
+      painters[id].draw = false;
+    }
+  }
+
+  calibrate(id) {
+    painters[id].numCount = 0;
+  }
+
+  delete(id) {
+    paths[id] = [];
+    painters[id].drawNum = -1;
+  }
+
+  remove(id) {
+    delete painters[id];
+    delete paths[id];
+    this.numPainters -= 1;
   }
 }
 
