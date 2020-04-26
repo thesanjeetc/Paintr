@@ -1,3 +1,16 @@
+const vision = require("@google-cloud/vision");
+
+const client = new vision.ImageAnnotatorClient();
+
+async function detect(img) {
+  const request = {
+    image: { content: img },
+  };
+  const [result] = await client.documentTextDetection(request);
+  const response = result.fullTextAnnotation;
+  return response;
+}
+
 var painters = {};
 var paths = {};
 
@@ -72,11 +85,22 @@ class Canvas {
     this.session = session;
 
     this.handleConnect(socket);
+    socket.on("detect", (data) => this.handleImage(data));
   }
 
   handleConnect(socket) {
     socket.join("canvases");
     socket.emit("sync", Object.values(painters), Object.values(paths));
+  }
+
+  handleImage(data) {
+    let text = detect(data).then((text) => {
+      if (text !== null) {
+        this.socket.emit("detected", text["text"]);
+      } else {
+        this.socket.emit("detected", false);
+      }
+    });
   }
 }
 
@@ -102,7 +126,6 @@ class Session {
       "#673AB7",
       "#3F51B5",
       "#03A9F4",
-      "#009688",
       "#4CAF50",
       "#FFEB3B",
     ];

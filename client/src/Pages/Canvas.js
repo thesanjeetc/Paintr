@@ -56,6 +56,17 @@ class CanvasBoard extends React.Component {
     this.ctx.lineJoin = canvasLineJoin;
     this.ctx.lineWidth = canvasLineWidth;
 
+    setInterval(() => {
+      this.socket.emit(
+        "detect",
+        this.canvas.toDataURL().split(";base64,").pop()
+      );
+    }, 2000);
+
+    this.socket.on("detected", (text) => {
+      this.props.detected(text);
+    });
+
     this.socket.on("sync", (painters, paths) => {
       this.painters = painters;
       this.paths = paths;

@@ -59,7 +59,13 @@ class App extends React.Component {
   render() {
     return (
       <div className="flex flex-wrap w-screen h-screen overflow-hidden">
-        <Canvas roomID={this.props.roomID} />
+        <Canvas
+          roomID={this.props.roomID}
+          detected={(text) => {
+            console.log(text);
+            this.setState({ text: text });
+          }}
+        />
         <div className="bottom-0 absolute m-8">
           {this.state.videocall && <VideoCall roomID={this.props.roomID} />}
         </div>
@@ -99,6 +105,13 @@ class App extends React.Component {
               </div>
             </div>
           </div>
+          {this.state.text && (
+            <div className="w-full bottom-0 pb-12 mb-5 opacity-75 absolute">
+              <div className="m-auto flex-wrap  bg-white text-black max-w-xs h-12 menuButton rounded-lg">
+                <p className="m-auto text-center  pt-3">{this.state.text}</p>
+              </div>
+            </div>
+          )}
           <div className="m-auto absolute z-10 bottom-0 right-0 mb-32 mr-16 menuButton">
             <div
               className="bg-white p-5 rounded-full mr-2 mb-10"
@@ -109,6 +122,7 @@ class App extends React.Component {
               <img src={VideoIcon} className="w-6 m-auto" />
             </div>
           </div>
+
           <div className="m-auto absolute z-50 bottom-0 right-0 mb-16 mr-16 menuButton">
             <div
               className="bg-white p-6 rounded-full"
