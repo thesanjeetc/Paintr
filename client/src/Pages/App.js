@@ -8,6 +8,26 @@ import Airscribe from "./Icons/airscribeMain.png";
 import VideoIcon from "./Icons/film.png";
 import QRCode from "qrcode";
 
+const VideoCall = (props) => {
+  return (
+    <iframe
+      src={
+        "https://tokbox.com/embed/embed/ot-embed.js?embedId=f1556e1b-053e-47f2-88a9-f6c4b344f9e7&room=" +
+        props.roomID +
+        "&iframe=true&abc=" +
+        Math.random()
+      }
+      width="360px"
+      height="200px"
+      scrolling="no"
+      frameBorder="0"
+      marginHeight="0"
+      marginWidth="0"
+      allow="microphone; camera"
+    ></iframe>
+  );
+};
+
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -32,6 +52,7 @@ class App extends React.Component {
 
     this.state = {
       menu: false,
+      videocall: false,
     };
   }
 
@@ -39,7 +60,9 @@ class App extends React.Component {
     return (
       <div className="flex flex-wrap w-screen h-screen overflow-hidden">
         <Canvas roomID={this.props.roomID} />
-
+        <div className="bottom-0 absolute m-8">
+          {this.state.videocall && <VideoCall roomID={this.props.roomID} />}
+        </div>
         <div className="w-screen h-screen fixed z-50 flex bg-transparent overflow-hidden">
           <div className="text-white absolute p-12">
             <img src={Icon} className="w-16 menuButton" />
@@ -76,13 +99,16 @@ class App extends React.Component {
               </div>
             </div>
           </div>
-          {this.state.text && (
-            <div className="w-full bottom-0 pb-12 mb-5 opacity-75 absolute">
-              <div className="m-auto flex-wrap  bg-white text-black max-w-xs h-12 menuButton rounded-lg">
-                <p className="m-auto text-center  pt-3">{this.state.text}</p>
-              </div>
+          <div className="m-auto absolute z-10 bottom-0 right-0 mb-32 mr-16 menuButton">
+            <div
+              className="bg-white p-5 rounded-full mr-2 mb-10"
+              onClick={() =>
+                this.setState({ videocall: !this.state.videocall })
+              }
+            >
+              <img src={VideoIcon} className="w-6 m-auto" />
             </div>
-          )}
+          </div>
           <div className="m-auto absolute z-50 bottom-0 right-0 mb-16 mr-16 menuButton">
             <div
               className="bg-white p-6 rounded-full"
