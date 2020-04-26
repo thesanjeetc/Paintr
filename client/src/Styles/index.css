@@ -5,6 +5,24 @@ body {
   background-color: black;
 }
 
+#page {
+  border: 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+}
+
+button,
+input,
+canvas,
+a {
+  outline: none;
+}
+
 .noselect {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
@@ -16,12 +34,37 @@ body {
 
 .calBtn {
   height: 20vh;
+  background-color: #4232ff;
 }
 
 .delBtn {
   height: 20vh;
+  background-color: #ff3232;
 }
 
 .drawBtn {
   height: 80vh;
+}
+
+.menuButton {
+  opacity: 0.7;
+  transition: 0.3s ease;
+}
+
+.menuButton:hover {
+  opacity: 1;
+}
+
+.menuOpen {
+  opacity: 1;
+  transition: 0.1s ease;
+}
+
+.menuClose {
+  opacity: 0;
+  transition: 0.1s ease;
+}
+
+.roomLink {
+  background-color: #4232ff;
 }

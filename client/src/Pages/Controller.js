@@ -15,6 +15,11 @@ class Controller extends React.Component {
 
     this.socket.emit("controller");
 
+    this.socket.on("colour", (colour) => {
+      console.log(colour);
+      document.querySelector("#bar").style.backgroundColor = colour;
+    });
+
     /* eslint-disable no-undef */
     const sensor = new AbsoluteOrientationSensor({
       frequency: 50,
@@ -34,17 +39,18 @@ class Controller extends React.Component {
     return (
       <div className=" w-screen h-screen overflow text-white flex flex-wrap">
         <div
-          className=" drawBtn bg-blue-600 w-full bg-black noselect flex"
+          className=" drawBtn bg-black w-full  noselect flex"
           onTouchStart={() => this.socket.emit("draw", true)}
           onTouchEnd={() => this.socket.emit("draw", false)}
         >
+          <div className="w-full h-8 bg-black absolute" id="bar"></div>
           <div className="m-auto noselect flex">
             <p>DRAW</p>
           </div>
         </div>
         <div className=" w-full noselect flex">
           <div
-            className=" calBtn w-1/2 bg-green-600 noselect flex"
+            className=" calBtn w-1/2 noselect flex"
             onClick={() => this.socket.emit("calibrate")}
           >
             <div className="m-auto noselect">
@@ -52,7 +58,7 @@ class Controller extends React.Component {
             </div>
           </div>
           <div
-            className=" delBtn w-1/2 bg-red-600 noselect flex"
+            className=" delBtn w-1/2 noselect flex"
             onClick={() => this.socket.emit("delete")}
           >
             <div className="m-auto noselect ">
