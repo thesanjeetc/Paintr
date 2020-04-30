@@ -1,9 +1,10 @@
 import React from "react";
 import io from "socket.io-client";
 
-class CanvasBoard extends React.Component {
+class Canvas extends React.Component {
   constructor(props) {
     super(props);
+    console.log(props.roomID);
     this.state = {};
 
     let roomID = props.roomID;
@@ -15,101 +16,141 @@ class CanvasBoard extends React.Component {
 
     this.socket.emit("canvas");
 
-    var canvas = document.createElement("canvas");
+    var pathCanvas = document.createElement("canvas");
+    var pointerCanvas = document.createElement("canvas");
 
     this.canvasWidth = window.innerWidth;
     this.canvasHeight = window.innerHeight;
-
-    canvas.setAttribute("width", this.canvasWidth);
-    canvas.setAttribute("height", this.canvasHeight);
-
     this.offset = [this.canvasWidth / 2, this.canvasHeight / 2];
+
+    pathCanvas.setAttribute("width", this.canvasWidth);
+    pathCanvas.setAttribute("height", this.canvasHeight);
+    pointerCanvas.setAttribute("width", this.canvasWidth);
+    pointerCanvas.setAttribute("height", this.canvasHeight);
 
     window.addEventListener("resize", () => {
       this.canvasWidth = window.innerWidth;
       this.canvasHeight = window.innerHeight;
 
-      canvas.setAttribute("width", this.canvasWidth);
-      canvas.setAttribute("height", this.canvasHeight);
+      pathCanvas.setAttribute("width", this.canvasWidth);
+      pathCanvas.setAttribute("height", this.canvasHeight);
+      pointerCanvas.setAttribute("width", this.canvasWidth);
+      pointerCanvas.setAttribute("height", this.canvasHeight);
 
       this.offset = [this.canvasWidth / 2, this.canvasHeight / 2];
     });
 
-    canvas.setAttribute("id", "canvas");
+    pathCanvas.setAttribute("id", "pathCanvas");
+    pointerCanvas.setAttribute("id", "pointerCanvas");
 
-    canvas.style.backgroundColor = "#000";
+    // canvas.style.backgroundColor = "#000";
 
     this.painters = [];
     this.paths = [];
+    this.lastPos = [];
 
-    this.canvas = canvas;
+    this.pathCanvas = pathCanvas;
+    this.pointerCanvas = pointerCanvas;
   }
 
   componentDidMount() {
     this.canvasBox = document.getElementById("canvasContainer");
-    this.canvasBox.appendChild(this.canvas);
+    this.canvasBox.appendChild(this.pathCanvas);
+    this.canvasBox.appendChild(this.pointerCanvas);
 
-    var canvasLineJoin = "round";
-    var canvasLineWidth = 10;
+    this.pathctx = this.pathCanvas.getContext("2d");
+    this.pathctx.lineJoin = "round";
+    this.pathctx.lineWidth = 5;
 
-    this.ctx = this.canvas.getContext("2d");
-    this.ctx.lineJoin = canvasLineJoin;
-    this.ctx.lineWidth = canvasLineWidth;
-
-    setInterval(() => {
-      this.socket.emit(
-        "detect",
-        this.canvas.toDataURL().split(";base64,").pop()
-      );
-    }, 2000);
-
-    this.socket.on("detected", (text) => {
-      this.props.detected(text);
-    });
+    this.pointerctx = this.pointerCanvas.getContext("2d");
 
     this.socket.on("sync", (painters, paths) => {
       this.painters = painters;
       this.paths = paths;
+      requestAnimationFrame(() => this.drawPath());
+    });
+
+    this.socket.on("update", (painters) => {
+      this.painters = painters;
     });
 
     this.draw();
   }
 
   draw() {
-    this.ctx.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
+    this.drawPointers();
+    this.updatePath();
+    requestAnimationFrame(() => this.draw());
+  }
+
+  drawPointers() {
+    this.pointerctx.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
+
+    this.painters.forEach((painter, i) => {
+      let curPos = [
+        painter.curPos[0] + this.offset[0],
+        painter.curPos[1] + this.offset[1],
+      ];
+
+      this.pointerctx.beginPath();
+      this.pointerctx.arc(...curPos, 20, 0, 2 * Math.PI);
+      this.pointerctx.fillStyle = this.painters[i].colour;
+      this.pointerctx.fill();
+      this.pointerctx.closePath();
+    });
+  }
+
+  updatePath() {
+    this.painters.forEach((painter, i) => {
+      if (this.lastPos[i] === undefined) {
+        this.lastPos[i] = [0, 0];
+      }
+
+      let lastPos = [
+        this.lastPos[i][0] + this.offset[0],
+        this.lastPos[i][1] + this.offset[1],
+      ];
+
+      this.lastPos[i] = painter.curPos;
+
+      if (painter.draw) {
+        let curPos = [
+          painter.curPos[0] + this.offset[0],
+          painter.curPos[1] + this.offset[1],
+        ];
+
+        this.pathctx.strokeStyle = painter.colour;
+        this.pathctx.beginPath();
+        this.pathctx.moveTo(...lastPos);
+        this.pathctx.lineTo(...curPos);
+      }
+    });
+
+    this.pathctx.stroke();
+  }
+
+  drawPath() {
+    this.pathctx.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
+
     if (Object.keys(this.painters).length !== 0) {
       this.paths.forEach((controller, i) => {
-        this.ctx.strokeStyle = this.painters[i].colour;
-        this.ctx.beginPath();
+        this.pathctx.strokeStyle = this.painters[i].colour;
+        this.pathctx.beginPath();
         controller.forEach((path) => {
           if (path.length !== 0) {
             path.forEach((pos, i) => {
               let curPos = [pos[0] + this.offset[0], pos[1] + this.offset[1]];
               if (i === 0) {
-                this.ctx.moveTo(...curPos);
+                this.pathctx.moveTo(...curPos);
               } else {
-                this.ctx.lineTo(...curPos);
+                this.pathctx.lineTo(...curPos);
               }
             });
-            this.ctx.stroke();
+            this.pathctx.stroke();
           }
         });
       });
-
-      this.painters.forEach((painter, i) => {
-        let curPos = [
-          this.painters[i].curPos[0] + this.offset[0],
-          this.painters[i].curPos[1] + this.offset[1],
-        ];
-
-        this.ctx.beginPath();
-        this.ctx.arc(...curPos, 20, 0, 2 * Math.PI);
-        this.ctx.fillStyle = this.painters[i].colour;
-        this.ctx.fill();
-        this.ctx.closePath();
-      });
     }
-    requestAnimationFrame(() => this.draw());
   }
 
   render() {
@@ -121,4 +162,4 @@ class CanvasBoard extends React.Component {
   }
 }
 
-export default CanvasBoard;
+export default Canvas;

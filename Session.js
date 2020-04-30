@@ -1,16 +1,3 @@
-const vision = require("@google-cloud/vision");
-
-const client = new vision.ImageAnnotatorClient();
-
-async function detect(img) {
-  const request = {
-    image: { content: img },
-  };
-  const [result] = await client.documentTextDetection(request);
-  const response = result.fullTextAnnotation;
-  return response;
-}
-
 var painters = {};
 var paths = {};
 
@@ -29,6 +16,7 @@ class Controller {
   }
 
   handleConnect(socket) {
+    console.log("connected");
     socket.join("controllers");
     this.id = socket.id;
     this.session.create(this.id);
@@ -85,33 +73,21 @@ class Canvas {
     this.session = session;
 
     this.handleConnect(socket);
-    socket.on("detect", (data) => this.handleImage(data));
   }
 
   handleConnect(socket) {
     socket.join("canvases");
     socket.emit("sync", Object.values(painters), Object.values(paths));
   }
-
-  handleImage(data) {
-    let text = detect(data).then((text) => {
-      if (text !== null) {
-        this.socket.emit("detected", text["text"]);
-      } else {
-        this.socket.emit("detected", false);
-      }
-    });
-  }
 }
 
 function Painter() {
   this.numCount = 0;
   this.initAngle = [0, 0];
-  this.path = [];
   this.drawNum = -1;
   this.curPos = [0, 0];
   this.colour = "";
-  this.initPos = [0, 0];
+  this.lastPos = [0, 0];
   this.draw = 0;
 }
 
@@ -142,8 +118,7 @@ class Session {
   }
 
   sync() {
-    let payload = [Object.values(painters), Object.values(paths)];
-    this.socket.to("canvases").emit("sync", ...payload);
+    this.socket.to("canvases").emit("update", Object.values(painters));
   }
 
   create(id) {
@@ -163,8 +138,8 @@ class Session {
   updatePos(id, angles, dist) {
     if (painters[id].numCount === 0) {
       painters[id].initAngle = angles;
-      painters[id].initPos = dist;
     } else {
+      painters[id].lastPos = painters[id].curPos;
       painters[id].curPos = dist;
       if (painters[id].draw) {
         paths[id][painters[id].drawNum].push(dist);
@@ -190,12 +165,14 @@ class Session {
   delete(id) {
     paths[id] = [];
     painters[id].drawNum = -1;
+    this.sync();
   }
 
   remove(id) {
     delete painters[id];
     delete paths[id];
     this.numPainters -= 1;
+    this.sync();
   }
 }
 

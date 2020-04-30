@@ -11,13 +11,14 @@ const routing = (
   <Router>
     <div>
       <Route path="/" exact component={App} />
-      <Route
-        path="/controller/:id"
-        component={(props) => <Controller roomID={props.match.params.id} />}
-      />
+      <Route path="/canvas" exact component={App} />
       <Route
         path="/canvas/:id"
         component={(props) => <App roomID={props.match.params.id} />}
+      />
+      <Route
+        path="/controller/:id"
+        component={(props) => <Controller roomID={props.match.params.id} />}
       />
     </div>
   </Router>

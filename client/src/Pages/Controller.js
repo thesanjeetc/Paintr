@@ -15,6 +15,8 @@ class Controller extends React.Component {
 
     this.socket.emit("controller");
 
+    this.socket.emit("draw", true);
+
     this.socket.on("colour", (colour) => {
       console.log(colour);
       document.querySelector("#bar").style.backgroundColor = colour;
