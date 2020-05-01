@@ -133,7 +133,7 @@ class App extends React.Component {
                     >
                       a blog
                     </a>{" "}
-                    . I also have{" "}
+                    . I'm also on{" "}
                     <a
                       href="https://twitter.com/thesanjeetc"
                       className="underline"
