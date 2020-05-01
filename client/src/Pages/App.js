@@ -31,10 +31,18 @@ class App extends React.Component {
       this.qr = url;
     });
 
-    this.state = {
-      menu: false,
-      about: false,
-    };
+    if (localStorage.getItem("visited") === null) {
+      localStorage.setItem("visited", "true");
+      this.state = {
+        menu: false,
+        about: true,
+      };
+    } else {
+      this.state = {
+        menu: true,
+        about: false,
+      };
+    }
   }
 
   render() {
