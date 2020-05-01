@@ -99,17 +99,25 @@ class Session {
     this.colours = [
       "#f44336",
       "#E91E63",
+      "#9C27B0",
       "#673AB7",
       "#3F51B5",
-      "#03A9F4",
+      "#2196F3",
+      "#00BCD4",
+      "#009688",
       "#4CAF50",
+      "#8BC34A",
+      "#CDDC39",
       "#FFEB3B",
+      "#FFC107",
+      "#FF9800",
+      "#FF5722",
     ];
 
     this.numPainters = 0;
     this.painters = {};
 
-    setInterval(() => this.sync(), 30);
+    setInterval(() => this.socket.emit("update", Object.values(painters)), 30);
 
     socket.on("connection", (client) => {
       client.on("controller", () => new Controller(client, this));
@@ -118,7 +126,7 @@ class Session {
   }
 
   sync() {
-    this.socket.to("canvases").emit("update", Object.values(painters));
+    this.socket.emit("sync", Object.values(painters), Object.values(paths));
   }
 
   create(id) {
@@ -126,9 +134,13 @@ class Session {
     painters[id] = painter;
     paths[id] = [];
     this.numPainters += 1;
-    let colour = this.colours[this.numPainters - 1];
+
+    let i = Math.floor(Math.random() * this.colours.length);
+    let colour = this.colours.splice(i, 1)[0];
     painters[id].colour = colour;
     this.socket.to(id).emit("colour", colour);
+
+    this.sync();
   }
 
   getAttr(id, attr) {
@@ -142,6 +154,9 @@ class Session {
       painters[id].lastPos = painters[id].curPos;
       painters[id].curPos = dist;
       if (painters[id].draw) {
+        if (paths[id][painters[id].drawNum] === undefined) {
+          paths[id][painters[id].drawNum] = [];
+        }
         paths[id][painters[id].drawNum].push(dist);
       }
     }
@@ -169,6 +184,7 @@ class Session {
   }
 
   remove(id) {
+    this.colours.push(painters[id].colour);
     delete painters[id];
     delete paths[id];
     this.numPainters -= 1;

@@ -7,15 +7,16 @@ class Controller extends React.Component {
     this.state = {};
 
     let roomID = props.roomID;
-    let address = window.location.hostname + "/";
+    let address = "https://air-scribe.uc.r.appspot.com" + "/";
     this.socket = io.connect(address + roomID, {
       query: { room: roomID },
-      reconnect: true,
+      reconnection: true,
+      reconnectionDelay: 1000,
+      reconnectionDelayMax: 5000,
+      reconnectionAttempts: Infinity,
     });
 
     this.socket.emit("controller");
-
-    this.socket.emit("draw", true);
 
     this.socket.on("colour", (colour) => {
       console.log(colour);
@@ -47,7 +48,7 @@ class Controller extends React.Component {
         >
           <div className="w-full h-8 bg-black absolute" id="bar"></div>
           <div className="m-auto noselect flex">
-            <p>DRAW</p>
+            <p>PRESS TO DRAW</p>
           </div>
         </div>
         <div className=" w-full noselect flex">

@@ -8,10 +8,13 @@ class Canvas extends React.Component {
     this.state = {};
 
     let roomID = props.roomID;
-    let address = window.location.hostname + "/";
+    let address = "https://air-scribe.uc.r.appspot.com" + "/";
     this.socket = io.connect(address + roomID, {
       query: { room: roomID },
-      reconnect: true,
+      reconnection: true,
+      reconnectionDelay: 1000,
+      reconnectionDelayMax: 5000,
+      reconnectionAttempts: Infinity,
     });
 
     this.socket.emit("canvas");
@@ -38,6 +41,7 @@ class Canvas extends React.Component {
       pointerCanvas.setAttribute("height", this.canvasHeight);
 
       this.offset = [this.canvasWidth / 2, this.canvasHeight / 2];
+      this.pathctx.lineWidth = 7;
     });
 
     pathCanvas.setAttribute("id", "pathCanvas");
@@ -60,7 +64,8 @@ class Canvas extends React.Component {
 
     this.pathctx = this.pathCanvas.getContext("2d");
     this.pathctx.lineJoin = "round";
-    this.pathctx.lineWidth = 5;
+    this.pathctx.lineCap = "round";
+    this.pathctx.lineWidth = 7;
 
     this.pointerctx = this.pointerCanvas.getContext("2d");
 
