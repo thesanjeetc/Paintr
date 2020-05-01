@@ -41,6 +41,9 @@ class Canvas extends React.Component {
       pointerCanvas.setAttribute("height", this.canvasHeight);
 
       this.offset = [this.canvasWidth / 2, this.canvasHeight / 2];
+
+      this.pathctx.lineJoin = "round";
+      this.pathctx.lineCap = "round";
       this.pathctx.lineWidth = 7;
     });
 
