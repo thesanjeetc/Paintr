@@ -73,7 +73,7 @@ class App extends React.Component {
               </p>
             </div>
             {this.state.menu && (
-              <div className="max-w-3xl min-w-xl w-full bg-transparent z-10 pr-16 pl-16 md:pt-32 pb-8 pt-32  text-white text-base m-auto h-full ">
+              <div className="max-w-3xl min-w-xl w-full md:w-3/4 lg:w-1/2 bg-transparent z-10 pr-8 pl-8 md:pt-32 pb-8 pt-32  text-white text-base m-auto h-full ">
                 <div className="overflow-y-auto w-full h-full scroller p-3">
                   {/* <p className="mt-4">Hello there! 👋</p> */}
                   <img width="250" src={this.qr} className="m-auto -mt-2" />
