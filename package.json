@@ -2,9 +2,9 @@
   "name": "airscribe",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js",
+  "main": "Server.js",
   "scripts": {
-    "start": "nodemon server.js",
+    "start": "node server.js",
     "heroku-postbuild": "npm install"
   },
   "author": "",
