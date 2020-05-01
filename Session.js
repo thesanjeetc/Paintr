@@ -35,12 +35,14 @@ class Controller {
   }
 
   handleOrientation(quaternion) {
-    let angles = this.toEuler(quaternion);
-    let dist = angles.map((angle, i) => {
-      let initAngle = painters[this.id].initAngle;
-      return this.calcDist(angle, initAngle[i]);
-    });
-    this.session.updatePos(this.id, angles, dist);
+    if (painters[this.id] !== undefined) {
+      let angles = this.toEuler(quaternion);
+      let dist = angles.map((angle, i) => {
+        let initAngle = painters[this.id].initAngle;
+        return this.calcDist(angle, initAngle[i]);
+      });
+      this.session.updatePos(this.id, angles, dist);
+    }
   }
 
   toEuler(q) {
