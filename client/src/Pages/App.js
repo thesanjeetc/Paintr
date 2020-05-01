@@ -32,14 +32,20 @@ class App extends React.Component {
     });
 
     if (localStorage.getItem("visited") === null) {
-      localStorage.setItem("visited", "true");
+      localStorage.setItem("visited", "1");
       this.state = {
         menu: false,
         about: true,
       };
-    } else {
+    } else if (localStorage.getItem("visited") === "1") {
+      localStorage.setItem("visited", "2");
       this.state = {
         menu: true,
+        about: false,
+      };
+    } else {
+      this.state = {
+        menu: false,
         about: false,
       };
     }
