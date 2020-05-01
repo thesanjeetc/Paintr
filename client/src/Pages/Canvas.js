@@ -8,7 +8,7 @@ class Canvas extends React.Component {
     this.state = {};
 
     let roomID = props.roomID;
-    let address = "https://air-scribe.uc.r.appspot.com" + "/";
+    let address = "https://airscribe.herokuapp.com" + "/";
     this.socket = io.connect(address + roomID, {
       query: { room: roomID },
       reconnection: true,
