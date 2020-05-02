@@ -50,7 +50,7 @@ a {
   transition: ease 0.1s;
 }
 
-.hoverbtn:hover {
+.hoverbtn:active {
   box-shadow: none;
   transform: scale(0.98);
 }

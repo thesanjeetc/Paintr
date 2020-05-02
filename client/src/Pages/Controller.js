@@ -79,15 +79,15 @@ class Controller extends React.Component {
 
   render() {
     return (
-      <div className=" w-screen h-screen bg-gray-900 overflow text-white flex flex-wrap">
+      <div className=" w-screen h-screen bg-black overflow text-white flex flex-wrap">
         <div className="w-full bg-gray-300 bar" id="bar"></div>
         <div
-          className=" drawBtn bg-gray-900 w-full  noselect flex"
+          className=" drawBtn bg-black w-full  noselect flex"
           onTouchStart={() => this.socket.emit("draw", true)}
           onTouchEnd={() => this.socket.emit("draw", false)}
         >
           <div className=" h-full w-full m-auto p-4">
-            <div className="border-b-8 border-blue-600 hoverbtn m-auto noselect text-gray-500 flex bg-gray-800 shadow-2xl  w-full rounded-lg h-full">
+            <div className="border-b-8 border-blue-600 hoverbtn m-auto noselect text-gray-500 flex bg-gray-900 shadow-2xl  w-full rounded-lg h-full">
               <p className="m-auto">DRAW</p>
             </div>
           </div>
@@ -97,7 +97,7 @@ class Controller extends React.Component {
             className=" calBtn w-1/2 noselect flex p-4"
             onClick={() => this.socket.emit("calibrate")}
           >
-            <div className="border-b-8 border-green-600 hoverbtn m-auto noselect flex bg-gray-800 text-gray-500  w-full h-full shadow-2xl rounded-lg">
+            <div className="border-b-8 border-green-600 hoverbtn m-auto noselect flex bg-gray-900 text-gray-500  w-full h-full shadow-2xl rounded-lg">
               <p className="m-auto">CALIBRATE</p>
             </div>
           </div>
@@ -105,7 +105,7 @@ class Controller extends React.Component {
             className=" delBtn text-gray-500 w-1/2 noselect flex p-4"
             onClick={() => this.socket.emit("delete")}
           >
-            <div className="border-b-8 border-red-600 hoverbtn m-auto noselect flex bg-gray-800 shadow-2xl  w-full h-full rounded-lg">
+            <div className="border-b-8 border-red-600 hoverbtn m-auto noselect flex bg-gray-900 shadow-2xl  w-full h-full rounded-lg">
               <p className="m-auto">CLEAR</p>
             </div>
           </div>
