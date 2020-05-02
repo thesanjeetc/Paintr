@@ -12,11 +12,11 @@ class Controller {
     socket.on("calibrate", (data) => this.handleCalibrate(data));
     socket.on("delete", (data) => this.handleDelete(data));
     socket.on("orientation", (data) => this.handleOrientation(data));
+    socket.on("colour", (data) => this.handleColour(data));
     socket.on("disconnect", () => this.handleDisconnect());
   }
 
   handleConnect(socket) {
-    console.log("connected");
     socket.join("controllers");
     this.id = socket.id;
     this.session.create(this.id);
@@ -32,6 +32,10 @@ class Controller {
 
   handleDelete(data) {
     this.session.delete(this.id);
+  }
+
+  handleColour(data) {
+    painters[this.id].colour = data;
   }
 
   handleOrientation(quaternion) {
@@ -73,6 +77,8 @@ class Canvas {
   constructor(socket, session) {
     this.socket = socket;
     this.session = session;
+
+    socket.emit("hello");
 
     this.handleConnect(socket);
   }
