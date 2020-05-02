@@ -25,6 +25,8 @@ class Controller extends React.Component {
 
     this.socket.emit("controller");
 
+    this.socket.emit("draw", true);
+
     /* eslint-disable no-undef */
     const sensor = new AbsoluteOrientationSensor({
       frequency: 50,

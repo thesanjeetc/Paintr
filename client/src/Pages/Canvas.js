@@ -147,10 +147,10 @@ class Canvas extends React.Component {
 
     if (Object.keys(this.painters).length !== 0) {
       this.paths.forEach((controller, i) => {
-        this.pathctx.strokeStyle = this.painters[i].colour;
         this.pathctx.beginPath();
         controller.forEach((path) => {
           if (path.length !== 0) {
+            this.pathctx.strokeStyle = path.shift();
             path.forEach((pos, i) => {
               let curPos = [pos[0] + this.offset[0], pos[1] + this.offset[1]];
               if (i === 0) {

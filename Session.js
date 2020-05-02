@@ -163,7 +163,7 @@ class Session {
       painters[id].curPos = dist;
       if (painters[id].draw) {
         if (paths[id][painters[id].drawNum] === undefined) {
-          paths[id][painters[id].drawNum] = [];
+          paths[id][painters[id].drawNum] = [painters[id].colour];
         }
         paths[id][painters[id].drawNum].push(dist);
       }
