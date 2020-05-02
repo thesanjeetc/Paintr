@@ -50,6 +50,8 @@ class Canvas extends React.Component {
       this.pathctx.lineJoin = "round";
       this.pathctx.lineCap = "round";
       this.pathctx.lineWidth = 7;
+
+      requestAnimationFrame(() => this.drawPath());
     });
 
     pathCanvas.setAttribute("id", "pathCanvas");

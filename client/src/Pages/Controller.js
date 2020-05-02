@@ -25,7 +25,9 @@ class Controller extends React.Component {
 
     this.socket.emit("controller");
 
-    this.socket.emit("draw", true);
+    if (process.env.NODE_ENV !== "production") {
+      this.socket.emit("draw", true);
+    }
 
     /* eslint-disable no-undef */
     const sensor = new AbsoluteOrientationSensor({
@@ -77,34 +79,34 @@ class Controller extends React.Component {
 
   render() {
     return (
-      <div className=" w-screen h-screen overflow text-white flex flex-wrap">
+      <div className=" w-screen h-screen bg-gray-900 overflow text-white flex flex-wrap">
+        <div className="w-full bg-gray-300 bar" id="bar"></div>
         <div
-          className=" drawBtn bg-black w-full  noselect flex"
+          className=" drawBtn bg-gray-900 w-full  noselect flex"
           onTouchStart={() => this.socket.emit("draw", true)}
           onTouchEnd={() => this.socket.emit("draw", false)}
         >
-          <div className="w-full h-8 bg-black absolute" id="bar">
-            <p>CHANGE</p>
-          </div>
-          <div className="m-auto noselect flex">
-            <p>PRESS TO DRAW</p>
+          <div className=" h-full w-full m-auto p-4">
+            <div className="border-b-8 border-blue-600 hoverbtn m-auto noselect text-gray-500 flex bg-gray-800 shadow-2xl  w-full rounded-lg h-full">
+              <p className="m-auto">DRAW</p>
+            </div>
           </div>
         </div>
         <div className=" w-full noselect flex">
           <div
-            className=" calBtn w-1/2 noselect flex"
+            className=" calBtn w-1/2 noselect flex p-4"
             onClick={() => this.socket.emit("calibrate")}
           >
-            <div className="m-auto noselect">
-              <p>CALIBRATE</p>
+            <div className="border-b-8 border-green-600 hoverbtn m-auto noselect flex bg-gray-800 text-gray-500  w-full h-full shadow-2xl rounded-lg">
+              <p className="m-auto">CALIBRATE</p>
             </div>
           </div>
           <div
-            className=" delBtn w-1/2 noselect flex"
+            className=" delBtn text-gray-500 w-1/2 noselect flex p-4"
             onClick={() => this.socket.emit("delete")}
           >
-            <div className="m-auto noselect ">
-              <p>CLEAR</p>
+            <div className="border-b-8 border-red-600 hoverbtn m-auto noselect flex bg-gray-800 shadow-2xl  w-full h-full rounded-lg">
+              <p className="m-auto">CLEAR</p>
             </div>
           </div>
         </div>

@@ -34,16 +34,25 @@ a {
 
 .calBtn {
   height: 20vh;
-  background-color: #4232ff;
+  /* background-color: #4232ff; */
 }
 
 .delBtn {
   height: 20vh;
-  background-color: #ff3232;
+  /* background-color: #ff3232; */
 }
 
 .drawBtn {
-  height: 80vh;
+  height: 74vh;
+}
+
+.hoverbtn {
+  transition: ease 0.1s;
+}
+
+.hoverbtn:hover {
+  box-shadow: none;
+  transform: scale(0.98);
 }
 
 .menuButton {
@@ -109,4 +118,8 @@ a {
 
 canvas {
   position: fixed;
+}
+
+.bar {
+  height: 6vh;
 }
