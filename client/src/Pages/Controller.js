@@ -7,7 +7,12 @@ class Controller extends React.Component {
     this.state = {};
 
     let roomID = props.roomID;
-    let address = "https://airscribe.herokuapp.com" + "/";
+
+    let address =
+      process.env.NODE_ENV === "production"
+        ? "https://airscribe.herokuapp.com/"
+        : window.location.hostname + "/";
+
     this.socket = io.connect(address + roomID, {
       query: { room: roomID },
       reconnection: true,

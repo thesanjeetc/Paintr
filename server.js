@@ -28,6 +28,7 @@ let liveSessions = {};
 
 io.on("connection", (client) => {
   let roomID = client.handshake.query["room"];
+  console.log(roomID);
   if (liveSessions[roomID] === undefined && roomID !== "") {
     let sessionSocket = io.of("/" + roomID);
     liveSessions[roomID] = new Session(sessionSocket, roomID);
