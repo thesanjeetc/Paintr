@@ -59,7 +59,7 @@ class App extends React.Component {
           <div className="w-screen h-screen fixed z-50 flex bg-transparent overflow-hidden">
             <div className="text-white absolute p-12 ">
               <div className="imgCont">
-                <img src={Paintr} className="h-24 menuButton" />
+                <img src={Paintr} className="h-32 menuButton" />
               </div>
             </div>
             <div className="text-white z-20 sm:hidden absolute rounded-lg right-0 mt-16 mr-20 flex">
@@ -95,10 +95,10 @@ class App extends React.Component {
                       pointer. Click the colour bar to change brush colour.
                     </li>
                     <li className="mt-4 ml-2">
-                      Share the room link with friends.
+                      Share the room link with others, for more fun.
                     </li>
                   </ul>
-                  <p className="p-3 rounded-lg text-white bg-teal-900  mt-6 text-center m-auto">
+                  <p className="p-3 rounded-lg text-white bg-gray-800  mt-6 text-center m-auto">
                     {window.location.hostname + "/canvas/" + this.props.roomID}
                   </p>
                   <p

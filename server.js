@@ -3,7 +3,7 @@ var path = require("path");
 var server = require("http").Server(app);
 const https = require("https");
 var io = require("socket.io")(server, {
-  origins: "https://airscribe.sanjeet.co/:*",
+  origins: "https://paintr.sanjeet.co/:*",
 });
 var express = require("express");
 var Session = require("./Session.js");
