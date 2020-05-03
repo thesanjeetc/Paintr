@@ -26,7 +26,11 @@ class Controller extends React.Component {
     this.socket.emit("controller");
 
     if (process.env.NODE_ENV !== "production") {
-      this.socket.emit("draw", true);
+      let x = true;
+      setInterval(() => {
+        this.socket.emit("draw", x);
+        x = !x;
+      }, 3000);
     }
 
     /* eslint-disable no-undef */
