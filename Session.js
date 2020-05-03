@@ -1,6 +1,3 @@
-var painters = {};
-var paths = {};
-
 class Controller {
   constructor(socket, session) {
     this.depth = 600;
@@ -35,14 +32,14 @@ class Controller {
   }
 
   handleColour(data) {
-    painters[this.id].colour = data;
+    this.session.painters[this.id].colour = data;
   }
 
   handleOrientation(quaternion) {
-    if (painters[this.id] !== undefined) {
+    if (this.session.painters[this.id] !== undefined) {
       let angles = this.toEuler(quaternion);
       let dist = angles.map((angle, i) => {
-        let initAngle = painters[this.id].initAngle;
+        let initAngle = this.session.painters[this.id].initAngle;
         return this.calcDist(angle, initAngle[i]);
       });
       this.session.updatePos(this.id, angles, dist);
@@ -78,15 +75,21 @@ class Canvas {
     this.socket = socket;
     this.session = session;
 
-    socket.emit("hello");
-
     this.handleConnect(socket);
+
+    socket.on("disconnect", () => this.handleDisconnect());
   }
 
   handleConnect(socket) {
     socket.join("canvases");
-    socket.emit("sync", Object.values(painters), Object.values(paths));
+    socket.emit(
+      "sync",
+      Object.values(this.session.painters),
+      Object.values(this.session.paths)
+    );
   }
+
+  handleDisconnect(data) {}
 }
 
 function Painter() {
@@ -103,6 +106,8 @@ class Session {
   constructor(socket, roomID) {
     this.socket = socket;
     this.roomID = roomID;
+    this.painters = {};
+    this.paths = {};
 
     this.colours = [
       "#f44336",
@@ -122,10 +127,10 @@ class Session {
       "#FF5722",
     ];
 
-    this.numPainters = 0;
-    this.painters = {};
-
-    setInterval(() => this.socket.emit("update", Object.values(painters)), 30);
+    setInterval(
+      () => this.socket.emit("update", Object.values(this.painters)),
+      30
+    );
 
     socket.on("connection", (client) => {
       client.on("controller", () => new Controller(client, this));
@@ -134,69 +139,70 @@ class Session {
   }
 
   sync() {
-    this.socket.emit("sync", Object.values(painters), Object.values(paths));
+    this.socket.emit(
+      "sync",
+      Object.values(this.painters),
+      Object.values(this.paths)
+    );
   }
 
   create(id) {
     let painter = new Painter();
-    painters[id] = painter;
-    paths[id] = [];
-    this.numPainters += 1;
+    this.painters[id] = painter;
+    this.paths[id] = [];
 
     let i = Math.floor(Math.random() * this.colours.length);
     let colour = this.colours.splice(i, 1)[0];
-    painters[id].colour = colour;
+    this.painters[id].colour = colour;
     this.socket.to(id).emit("colour", colour);
 
     this.sync();
   }
 
   getAttr(id, attr) {
-    return painters[id][attr];
+    return this.painters[id][attr];
   }
 
   updatePos(id, angles, dist) {
-    if (painters[id].numCount === 0) {
-      painters[id].initAngle = angles;
+    if (this.painters[id].numCount === 0) {
+      this.painters[id].initAngle = angles;
     } else {
-      painters[id].lastPos = painters[id].curPos;
-      painters[id].curPos = dist;
-      if (painters[id].draw) {
-        if (paths[id][painters[id].drawNum] === undefined) {
-          paths[id][painters[id].drawNum] = [];
+      this.painters[id].lastPos = this.painters[id].curPos;
+      this.painters[id].curPos = dist;
+      if (this.painters[id].draw) {
+        if (this.paths[id][this.painters[id].drawNum] === undefined) {
+          this.paths[id][this.painters[id].drawNum] = [];
         }
-        console.log(paths[id][painters[id].drawNum][0]);
-        paths[id][painters[id].drawNum].push(dist);
+        this.paths[id][this.painters[id].drawNum].push(dist);
       }
     }
-    painters[id].numCount += 1;
+    this.painters[id].numCount += 1;
   }
 
   draw(id, state) {
     if (state) {
-      painters[id].draw = true;
-      paths[id].push([painters[id].colour]);
-      painters[id].drawNum += 1;
+      this.painters[id].draw = true;
+      this.paths[id].push([this.painters[id].colour]);
+      this.painters[id].drawNum += 1;
     } else {
-      painters[id].draw = false;
+      this.painters[id].draw = false;
     }
   }
 
   calibrate(id) {
-    painters[id].numCount = 0;
+    this.painters[id].numCount = 0;
   }
 
   delete(id) {
-    paths[id] = [];
-    painters[id].drawNum = -1;
+    this.paths[id] = [];
+    this.painters[id].drawNum = -1;
     this.sync();
   }
 
   remove(id) {
-    this.colours.push(painters[id].colour);
-    delete painters[id];
-    delete paths[id];
-    this.numPainters -= 1;
+    this.colours.push(this.painters[id].colour);
+    delete this.painters[id];
+    delete this.paths[id];
     this.sync();
   }
 }
