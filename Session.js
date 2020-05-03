@@ -163,8 +163,9 @@ class Session {
       painters[id].curPos = dist;
       if (painters[id].draw) {
         if (paths[id][painters[id].drawNum] === undefined) {
-          paths[id][painters[id].drawNum] = [painters[id].colour];
+          paths[id][painters[id].drawNum] = [];
         }
+        console.log(paths[id][painters[id].drawNum][0]);
         paths[id][painters[id].drawNum].push(dist);
       }
     }
@@ -174,7 +175,7 @@ class Session {
   draw(id, state) {
     if (state) {
       painters[id].draw = true;
-      paths[id].push([]);
+      paths[id].push([painters[id].colour]);
       painters[id].drawNum += 1;
     } else {
       painters[id].draw = false;

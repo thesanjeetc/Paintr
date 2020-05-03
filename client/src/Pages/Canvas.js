@@ -151,6 +151,7 @@ class Canvas extends React.Component {
       this.paths.forEach((controller, i) => {
         this.pathctx.beginPath();
         controller.forEach((path) => {
+          console.log(path);
           if (path.length !== 0) {
             this.pathctx.strokeStyle = path.shift();
             path.forEach((pos, i) => {
