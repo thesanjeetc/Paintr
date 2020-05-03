@@ -123,3 +123,21 @@ canvas {
 .bar {
   height: 6vh;
 }
+
+.bg-main {
+  background-color: #1e3040;
+}
+
+.imgCont {
+  max-width: 40px;
+  transition: 0.4s ease;
+}
+
+.imgCont:hover {
+  max-width: 1000px;
+}
+
+.imgCont img {
+  object-fit: cover;
+  object-position: 0 0;
+}

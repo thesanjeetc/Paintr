@@ -57,8 +57,6 @@ class Canvas extends React.Component {
     pathCanvas.setAttribute("id", "pathCanvas");
     pointerCanvas.setAttribute("id", "pointerCanvas");
 
-    // canvas.style.backgroundColor = "#000";
-
     this.painters = [];
     this.paths = [];
     this.lastPos = [];

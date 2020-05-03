@@ -3,8 +3,8 @@ import { withRouter } from "react-router-dom";
 import Canvas from "./Canvas";
 import MenuButton from "./Icons/menu.png";
 import CloseButton from "./Icons/close.png";
-import Icon from "./Icons/airScribeIcon.png";
-import Airscribe from "./Icons/airscribeMain.png";
+import Icon from "./Icons/paintrIcon.png";
+import Paintr from "./Icons/paintrMain.png";
 import InfoIcon from "./Icons/info.png";
 import CoffeeIcon from "./Icons/coffee.png";
 import QRCode from "qrcode";
@@ -57,8 +57,10 @@ class App extends React.Component {
         <div className="flex flex-wrap w-screen h-screen overflow-hidden">
           <Canvas roomID={this.props.roomID} />
           <div className="w-screen h-screen fixed z-50 flex bg-transparent overflow-hidden">
-            <div className="text-white absolute p-12">
-              <img src={Icon} className="w-16 menuButton" />
+            <div className="text-white absolute p-12 ">
+              <div className="imgCont">
+                <img src={Paintr} className="h-24 menuButton" />
+              </div>
             </div>
             <div className="text-white z-20 sm:hidden absolute rounded-lg right-0 mt-16 mr-20 flex">
               <p
@@ -96,7 +98,7 @@ class App extends React.Component {
                       Share the room link with friends.
                     </li>
                   </ul>
-                  <p className="p-3 rounded-lg text-white themeblue  mt-6 text-center m-auto">
+                  <p className="p-3 rounded-lg text-white bg-teal-900  mt-6 text-center m-auto">
                     {window.location.hostname + "/canvas/" + this.props.roomID}
                   </p>
                   <p
@@ -109,14 +111,15 @@ class App extends React.Component {
               </div>
             )}
             {this.state.about && (
-              <div className="max-w-3xl min-w-xl w-full md:w-3/4 lg:w-1/2 bg-transparent z-10 pr-8 pl-8 md:pt-32 pt-32 pb-16 text-white text-base m-auto h-full ">
+              <div className="max-w-3xl min-w-xl w-full md:w-3/4 lg:w-1/2 bg-transparent z-10 pr-8 pl-8 md:pt-24 pt-24 pb-8 text-white text-base m-auto h-full ">
                 <div className="overflow-y-auto w-full h-full scroller p-3">
+                  <img width="300" src={Paintr} className="m-auto -mt-2" />
                   <p className="mt-4">Hello there! 👋</p>
                   <p className="mt-4">
-                    AirScribe is a digital canvas on which everyone can paint
-                    on, with their phone. That's right - with a built in
-                    inertial measurement unit in almost every phone, AirScribe
-                    brings control and flexibility back to your hands.
+                    Paintr is a digital canvas on which everyone can paint on,
+                    with their phone. That's right - with a built in inertial
+                    measurement unit in almost every phone, Paintr brings
+                    control and flexibility back to your hands.
                   </p>
                   <p className="mt-4">
                     I created this as an experiment to explore a more intuitive
@@ -125,14 +128,13 @@ class App extends React.Component {
                   </p>
                   <p className="mt-4">
                     Try it out now. Press the menu button. Scan the QR code. And
-                    you're in! AirScribe supports multiple controllers and
-                    screens so share the room link with friends. Or perhaps cast
-                    the tab to the big screen. It's quite flexible and really
-                    cool.
+                    you're in! Paintr supports multiple controllers and screens
+                    so share the room link with friends. Or perhaps cast the tab
+                    to the big screen. It's quite flexible and really cool.
                   </p>
                   <p className="mt-4">
                     By the way, I'm Sanjeet. I am an 18 year old student with a
-                    passion for technology, design and startups. I have&nbsp;
+                    passion for technology and design. I have&nbsp;
                     <a
                       href="https://medium.com/@thesanjeetc"
                       className="underline"
@@ -150,7 +152,7 @@ class App extends React.Component {
                   </p>
                   <p className="mt-4">
                     {" "}
-                    If you like AirScribe, why not{" "}
+                    If you like Paintr, why not{" "}
                     <a
                       href="https://www.buymeacoffee.com/thesanjeetc"
                       className="underline"
