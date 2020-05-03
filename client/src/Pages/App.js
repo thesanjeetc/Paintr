@@ -92,7 +92,7 @@ class App extends React.Component {
                     </li>
                     <li className="mt-4 ml-2">
                       Press CALIBRATE on your mobile controller to center your
-                      pointer. Click the colour bar to change brush colour.
+                      pointer. Click the top COLOUR bar to change brush colour.
                     </li>
                     <li className="mt-4 ml-2">
                       Share the room link with others, for more fun.
