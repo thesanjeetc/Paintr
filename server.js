@@ -1,4 +1,3 @@
-var osutils = require("os-utils");
 var app = require("express")();
 var path = require("path");
 var server = require("http").Server(app);
@@ -23,7 +22,7 @@ app.get("*", (req, res) => {
 
 const wakeUpDyno = () => {
   setInterval(() => {
-    https.get("https://airscribe.herokuapp.com/").on("error", (err) => {
+    https.get("https://paintr.sanjeet.co/").on("error", (err) => {
       console.log("Ping Error: " + err.message);
     });
   }, 1500000);
@@ -34,22 +33,6 @@ server.listen(process.env.PORT || 80, () => {
 });
 
 let liveSessions = {};
-
-if (process.env.NODE_ENV === "production") {
-  setInterval(() => {
-    console.log("Platform: " + osutils.platform());
-    console.log("Number of CPUs: " + osutils.cpuCount());
-    osutils.cpuUsage(function (v) {
-      console.log("CPU Usage (%) : " + v);
-    });
-    console.log("Load Average (5m): " + osutils.loadavg(5));
-    console.log("Total Memory: " + osutils.totalmem() + "MB");
-    console.log("Free Memory: " + osutils.freemem() + "MB");
-    console.log("Free Memory (%): " + osutils.freememPercentage());
-    console.log("System Uptime: " + osutils.sysUptime() + "ms");
-    console.log("Live Sessions:  " + Object.keys(liveSessions));
-  }, 1000);
-}
 
 io.on("connection", (client) => {
   let roomID = client.handshake.query["room"];
