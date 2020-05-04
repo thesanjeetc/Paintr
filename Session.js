@@ -67,6 +67,7 @@ class Controller {
 
   handleDisconnect(data) {
     this.session.remove(this.id);
+    this.session.disconnect();
   }
 }
 
@@ -89,7 +90,9 @@ class Canvas {
     );
   }
 
-  handleDisconnect(data) {}
+  handleDisconnect(data) {
+    this.session.disconnect();
+  }
 }
 
 function Painter() {
@@ -103,9 +106,10 @@ function Painter() {
 }
 
 class Session {
-  constructor(socket, roomID) {
+  constructor(socket, roomID, kill) {
     this.socket = socket;
     this.roomID = roomID;
+    this.kill = kill;
     this.painters = {};
     this.paths = {};
 
@@ -204,6 +208,12 @@ class Session {
     delete this.painters[id];
     delete this.paths[id];
     this.sync();
+  }
+
+  disconnect() {
+    if (Object.keys(this.socket.connected).length === 0) {
+      this.kill();
+    }
   }
 }
 

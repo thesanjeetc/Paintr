@@ -33,9 +33,7 @@ server.listen(process.env.PORT || 80, () => {
   wakeUpDyno();
 });
 
-let logging = false;
-
-if (logging) {
+if (process.env.NODE_ENV === "production") {
   setInterval(() => {
     console.log("Platform: " + osutils.platform());
     console.log("Number of CPUs: " + osutils.cpuCount());
@@ -47,6 +45,7 @@ if (logging) {
     console.log("Free Memory: " + osutils.freemem() + "MB");
     console.log("Free Memory (%): " + osutils.freememPercentage());
     console.log("System Uptime: " + osutils.sysUptime() + "ms");
+    console.log("Live Sessions:  " + Object.keys(liveSessions));
   }, 1000);
 }
 
@@ -56,6 +55,10 @@ io.on("connection", (client) => {
   let roomID = client.handshake.query["room"];
   if (liveSessions[roomID] === undefined && roomID !== "") {
     let sessionSocket = io.of("/" + roomID);
-    liveSessions[roomID] = new Session(sessionSocket, roomID);
+    liveSessions[roomID] = new Session(sessionSocket, roomID, () => {
+      sessionSocket.removeAllListeners();
+      delete io.nsps["/" + roomID];
+      delete liveSessions[roomID];
+    });
   }
 });
