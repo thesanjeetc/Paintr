@@ -141,3 +141,7 @@ canvas {
   object-fit: cover;
   object-position: 0 0;
 }
+
+.prodHunt {
+  background-color: #db542b;
+}

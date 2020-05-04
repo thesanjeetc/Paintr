@@ -59,7 +59,7 @@ class App extends React.Component {
           <div className="w-screen h-screen fixed z-50 flex bg-transparent overflow-hidden">
             <div className="text-white absolute sm:p-12 ">
               <div className="imgCont">
-                <img src={Paintr} className="h-32 menuButton ml-6 mt-4" />
+                <img src={Paintr} className="h-32 menuButton ml-6 mt-2" />
               </div>
             </div>
             <div className="text-white z-20  absolute rounded-lg right-0 sm:mt-20 mt-12  mr-12 sm:mr-24 flex">
@@ -126,7 +126,7 @@ class App extends React.Component {
                     carry around in our pockets.
                   </p>
                   <p className="mt-4">
-                    Try it out now. Press the menu button. Scan the QR code. And
+                    Try it out now. Press the help button. Scan the QR code. And
                     you're in! Paintr supports multiple controllers and screens
                     so share the room link with friends. Or perhaps cast the tab
                     to the big screen. It's quite flexible and really cool.
@@ -169,13 +169,6 @@ class App extends React.Component {
                 </div>
               </div>
             )}
-            {/* {this.state.text && (
-              <div className="w-full bottom-0 pb-12 mb-5 opacity-75 absolute">
-                <div className="m-auto flex-wrap  bg-white text-black max-w-xs h-12 menuButton rounded-lg">
-                  <p className="m-auto text-center  pt-3">{this.state.text}</p>
-                </div>
-              </div>
-            )} */}
             <div className="m-auto block absolute z-10 bottom-0 right-0 mr-4 md:mb-16 md:mr-20 menuButton ">
               <a href="https://www.buymeacoffee.com/thesanjeetc">
                 <div className="rounded-full p-2 mr-2 mb-10 md:mb-8 coffeeButton">
