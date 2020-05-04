@@ -57,12 +57,12 @@ class App extends React.Component {
         <div className="flex flex-wrap w-screen h-screen overflow-hidden">
           <Canvas roomID={this.props.roomID} />
           <div className="w-screen h-screen fixed z-50 flex bg-transparent overflow-hidden">
-            <div className="text-white absolute p-12 ">
+            <div className="text-white absolute sm:p-12 ">
               <div className="imgCont">
-                <img src={Paintr} className="h-32 menuButton" />
+                <img src={Paintr} className="h-32 menuButton ml-6 mt-4" />
               </div>
             </div>
-            <div className="text-white z-20 sm:hidden absolute rounded-lg right-0 mt-16 mr-20 flex">
+            <div className="text-white z-20  absolute rounded-lg right-0 sm:mt-20 mt-12  mr-12 sm:mr-24 flex">
               <p
                 className=" cursor-pointer pl-4 pt-2 pb-2 menuButton no-select mr-4"
                 onClick={() =>
@@ -83,7 +83,6 @@ class App extends React.Component {
             {this.state.menu && (
               <div className="max-w-3xl min-w-xl w-full md:w-3/4 lg:w-1/2 bg-transparent z-10 pr-8 pl-8 md:pt-32 pb-8 pt-32  text-white text-base m-auto h-full ">
                 <div className="overflow-y-auto w-full h-full scroller p-3">
-                  {/* <p className="mt-4">Hello there! 👋</p> */}
                   <img width="250" src={this.qr} className="m-auto -mt-2" />
                   <ul className="list-disc list-outside">
                     <li className="mt-4 ml-2">
@@ -98,7 +97,7 @@ class App extends React.Component {
                       Share the room link with others, for more fun.
                     </li>
                   </ul>
-                  <p className="p-3 rounded-lg text-white bg-gray-800  mt-6 text-center m-auto">
+                  <p className="p-3 rounded-lg text-black bg-white  mt-6 text-center m-auto">
                     {window.location.hostname + "/canvas/" + this.props.roomID}
                   </p>
                   <p
@@ -111,9 +110,9 @@ class App extends React.Component {
               </div>
             )}
             {this.state.about && (
-              <div className="max-w-3xl min-w-xl w-full md:w-3/4 lg:w-1/2 bg-transparent z-10 pr-8 pl-8 md:pt-24 pt-24 pb-8 text-white text-base m-auto h-full ">
+              <div className="max-w-3xl min-w-xl w-full md:w-3/4 lg:w-3/5 xl:w-1/2 bg-transparent z-10 pr-8 pl-8 md:pt-24 pt-24 pb-8 text-white text-base m-auto h-full ">
                 <div className="overflow-y-auto w-full h-full scroller p-3">
-                  <img width="300" src={Paintr} className="m-auto -mt-2" />
+                  <img width="400" src={Paintr} className="m-auto -mt-2" />
                   <p className="mt-4">Hello there! 👋</p>
                   <p className="mt-4">
                     Paintr is a digital canvas on which everyone can paint on,
@@ -170,45 +169,19 @@ class App extends React.Component {
                 </div>
               </div>
             )}
-            {this.state.text && (
+            {/* {this.state.text && (
               <div className="w-full bottom-0 pb-12 mb-5 opacity-75 absolute">
                 <div className="m-auto flex-wrap  bg-white text-black max-w-xs h-12 menuButton rounded-lg">
                   <p className="m-auto text-center  pt-3">{this.state.text}</p>
                 </div>
               </div>
-            )}
-            <div className="m-auto sm:block hidden absolute z-10 bottom-0 right-0 mb-56 mr-16 menuButton ">
+            )} */}
+            <div className="m-auto block absolute z-10 bottom-0 right-0 mr-4 md:mb-16 md:mr-20 menuButton ">
               <a href="https://www.buymeacoffee.com/thesanjeetc">
                 <div className="rounded-full p-2 mr-2 mb-10 md:mb-8 coffeeButton">
                   <img src={CoffeeIcon} className=" w-12 m-auto" />
                 </div>
               </a>
-            </div>
-            <div className="m-auto sm:block hidden absolute z-10 bottom-0 right-0 mb-32 mr-16 menuButton">
-              <div
-                className="bg-white p-5 rounded-full mr-2 mb-10"
-                onClick={() =>
-                  this.setState({ about: !this.state.about, menu: false })
-                }
-              >
-                <img
-                  src={this.state.about ? CloseButton : InfoIcon}
-                  className="w-6 m-auto"
-                />
-              </div>
-            </div>
-            <div className="m-auto sm:block hidden absolute z-50 bottom-0 right-0 mb-16 mr-16 menuButton">
-              <div
-                className="bg-white p-6 rounded-full"
-                onClick={() =>
-                  this.setState({ menu: !this.state.menu, about: false })
-                }
-              >
-                <img
-                  src={this.state.menu ? CloseButton : MenuButton}
-                  className="w-8 m-auto"
-                />
-              </div>
             </div>
           </div>
         </div>
