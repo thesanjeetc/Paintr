@@ -33,6 +33,8 @@ server.listen(process.env.PORT || 80, () => {
   wakeUpDyno();
 });
 
+let liveSessions = {};
+
 if (process.env.NODE_ENV === "production") {
   setInterval(() => {
     console.log("Platform: " + osutils.platform());
@@ -48,8 +50,6 @@ if (process.env.NODE_ENV === "production") {
     console.log("Live Sessions:  " + Object.keys(liveSessions));
   }, 1000);
 }
-
-let liveSessions = {};
 
 io.on("connection", (client) => {
   let roomID = client.handshake.query["room"];
