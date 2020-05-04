@@ -60,6 +60,7 @@ class Canvas extends React.Component {
     this.painters = [];
     this.paths = [];
     this.lastPos = [];
+    this.cleared = false;
 
     this.pathCanvas = pathCanvas;
     this.pointerCanvas = pointerCanvas;
@@ -125,17 +126,20 @@ class Canvas extends React.Component {
       ];
 
       this.lastPos[i] = painter.curPos;
-
       if (painter.draw) {
-        let curPos = [
-          painter.curPos[0] + this.offset[0],
-          painter.curPos[1] + this.offset[1],
-        ];
+        if (!this.cleared) {
+          let curPos = [
+            painter.curPos[0] + this.offset[0],
+            painter.curPos[1] + this.offset[1],
+          ];
 
-        this.pathctx.strokeStyle = painter.colour;
-        this.pathctx.beginPath();
-        this.pathctx.moveTo(...lastPos);
-        this.pathctx.lineTo(...curPos);
+          this.pathctx.strokeStyle = painter.colour;
+          this.pathctx.beginPath();
+          this.pathctx.moveTo(...lastPos);
+          this.pathctx.lineTo(...curPos);
+        }
+      } else {
+        this.cleared = false;
       }
     });
 
@@ -143,12 +147,13 @@ class Canvas extends React.Component {
   }
 
   drawPath() {
+    this.cleared = true;
+    this.lastPos = [];
     this.pathctx.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
-
-    if (Object.keys(this.painters).length !== 0) {
+    if (this.painters.length !== 0) {
       this.paths.forEach((controller, i) => {
         controller.forEach((path) => {
-          if (path.length !== 1) {
+          if (path.length > 1) {
             let color = path.shift();
             this.pathctx.beginPath();
             this.pathctx.strokeStyle = color;

@@ -3,9 +3,15 @@ var app = require("express")();
 var path = require("path");
 var server = require("http").Server(app);
 const https = require("https");
-var io = require("socket.io")(server, {
-  origins: "https://paintr.sanjeet.co:*",
-});
+
+if (process.env.NODE_ENV === "production") {
+  var io = require("socket.io")(server, {
+    origins: "https://paintr.sanjeet.co:*",
+  });
+} else {
+  var io = require("socket.io")(server);
+}
+
 var express = require("express");
 var Session = require("./Session.js");
 
@@ -27,18 +33,22 @@ server.listen(process.env.PORT || 80, () => {
   wakeUpDyno();
 });
 
-setInterval(() => {
-  console.log("Platform: " + osutils.platform());
-  console.log("Number of CPUs: " + osutils.cpuCount());
-  osutils.cpuUsage(function (v) {
-    console.log("CPU Usage (%) : " + v);
-  });
-  console.log("Load Average (5m): " + osutils.loadavg(5));
-  console.log("Total Memory: " + osutils.totalmem() + "MB");
-  console.log("Free Memory: " + osutils.freemem() + "MB");
-  console.log("Free Memory (%): " + osutils.freememPercentage());
-  console.log("System Uptime: " + osutils.sysUptime() + "ms");
-}, 1000);
+let logging = false;
+
+if (logging) {
+  setInterval(() => {
+    console.log("Platform: " + osutils.platform());
+    console.log("Number of CPUs: " + osutils.cpuCount());
+    osutils.cpuUsage(function (v) {
+      console.log("CPU Usage (%) : " + v);
+    });
+    console.log("Load Average (5m): " + osutils.loadavg(5));
+    console.log("Total Memory: " + osutils.totalmem() + "MB");
+    console.log("Free Memory: " + osutils.freemem() + "MB");
+    console.log("Free Memory (%): " + osutils.freememPercentage());
+    console.log("System Uptime: " + osutils.sysUptime() + "ms");
+  }, 1000);
+}
 
 let liveSessions = {};
 
