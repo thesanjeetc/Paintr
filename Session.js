@@ -78,6 +78,7 @@ class Canvas {
 
     this.handleConnect(socket);
 
+    socket.on("resync", () => this.handleSync());
     socket.on("disconnect", () => this.handleDisconnect());
   }
 
@@ -88,6 +89,10 @@ class Canvas {
       Object.values(this.session.painters),
       Object.values(this.session.paths)
     );
+  }
+
+  handleSync(data) {
+    this.session.sync();
   }
 
   handleDisconnect(data) {

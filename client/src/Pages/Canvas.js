@@ -51,7 +51,7 @@ class Canvas extends React.Component {
       this.pathctx.lineCap = "round";
       this.pathctx.lineWidth = 7;
 
-      requestAnimationFrame(() => this.drawPath());
+      this.socket.emit("resync");
     });
 
     pathCanvas.setAttribute("id", "pathCanvas");
@@ -60,7 +60,7 @@ class Canvas extends React.Component {
     this.painters = [];
     this.paths = [];
     this.lastPos = [];
-    this.cleared = false;
+    this.redraw = false;
 
     this.pathCanvas = pathCanvas;
     this.pointerCanvas = pointerCanvas;
@@ -81,7 +81,7 @@ class Canvas extends React.Component {
     this.socket.on("sync", (painters, paths) => {
       this.painters = painters;
       this.paths = paths;
-      requestAnimationFrame(() => this.drawPath());
+      this.redraw = true;
     });
 
     this.socket.on("update", (painters) => {
@@ -94,6 +94,10 @@ class Canvas extends React.Component {
   draw() {
     this.drawPointers();
     this.updatePath();
+    if (this.redraw) {
+      this.drawPath();
+      this.redraw = false;
+    }
     requestAnimationFrame(() => this.draw());
   }
 
@@ -125,20 +129,19 @@ class Canvas extends React.Component {
         this.lastPos[i][1] + this.offset[1],
       ];
 
-      this.lastPos[i] = painter.curPos;
       if (painter.draw) {
         let curPos = [
           painter.curPos[0] + this.offset[0],
           painter.curPos[1] + this.offset[1],
         ];
 
-        console.log(lastPos, curPos);
-
         this.pathctx.strokeStyle = painter.colour;
         this.pathctx.beginPath();
         this.pathctx.moveTo(...lastPos);
         this.pathctx.lineTo(...curPos);
       }
+
+      this.lastPos[i] = painter.curPos;
     });
 
     this.pathctx.stroke();
