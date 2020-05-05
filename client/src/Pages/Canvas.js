@@ -4,7 +4,6 @@ import io from "socket.io-client";
 class Canvas extends React.Component {
   constructor(props) {
     super(props);
-    console.log(props.roomID);
     this.state = {};
 
     let roomID = props.roomID;
@@ -140,10 +139,7 @@ class Canvas extends React.Component {
         this.pathctx.beginPath();
         this.pathctx.moveTo(...lastPos);
         this.pathctx.lineTo(...curPos);
-        // console.log(painter);
         this.pathctx.stroke();
-      } else {
-        // console.log("NOT DRAWING");
       }
 
       this.lastPos[i] = painter.curPos;
@@ -152,7 +148,6 @@ class Canvas extends React.Component {
 
   drawPath() {
     this.pathctx.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
-    console.log("REDRAW: " + this.paths);
     this.lastPos = [];
     if (this.painters.length !== 0) {
       this.paths.forEach((controller, i) => {
