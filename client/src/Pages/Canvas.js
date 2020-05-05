@@ -117,7 +117,7 @@ class Canvas extends React.Component {
   updatePath() {
     this.painters.forEach((painter, i) => {
       if (this.lastPos[i] === undefined) {
-        this.lastPos[i] = [0, 0];
+        this.lastPos[i] = painter.curPos;
       }
 
       let lastPos = [
@@ -138,15 +138,16 @@ class Canvas extends React.Component {
         this.pathctx.beginPath();
         this.pathctx.moveTo(...lastPos);
         this.pathctx.lineTo(...curPos);
-
-        this.pathctx.stroke();
       }
     });
+
+    this.pathctx.stroke();
   }
 
   drawPath() {
     this.pathctx.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
     console.log("REDRAW: " + this.paths);
+    this.lastPos = [];
     if (this.painters.length !== 0) {
       this.paths.forEach((controller, i) => {
         controller.forEach((path) => {
