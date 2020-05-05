@@ -140,6 +140,8 @@ class Canvas extends React.Component {
         this.pathctx.beginPath();
         this.pathctx.moveTo(...lastPos);
         this.pathctx.lineTo(...curPos);
+      } else {
+        console.log(painter);
       }
 
       this.lastPos[i] = painter.curPos;
