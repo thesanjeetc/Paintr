@@ -39,7 +39,7 @@ class Controller extends React.Component {
     try {
       /* eslint-disable no-undef */
       const sensor = new AbsoluteOrientationSensor({
-        frequency: 50,
+        frequency: 40,
       });
       sensor.addEventListener("error", (event) => {
         // Handle runtime errors.
