@@ -120,6 +120,10 @@ class Canvas extends React.Component {
 
   updatePath() {
     this.painters.forEach((painter, i) => {
+      if (painter.cleared) {
+        this.socket.emit("resync");
+      }
+
       if (this.lastPos[i] === undefined) {
         this.lastPos[i] = painter.curPos;
       }
