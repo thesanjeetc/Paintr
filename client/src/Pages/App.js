@@ -81,7 +81,7 @@ class App extends React.Component {
               </p>
             </div>
             {this.state.menu && (
-              <div className="max-w-3xl min-w-xl w-full md:w-3/4 lg:w-1/2 bg-transparent z-10 pr-8 pl-8 md:pt-32 pb-8 pt-32  text-white text-base m-auto h-full ">
+              <div className="max-w-3xl min-w-xl w-full md:w-3/4 lg:w-3/5 xl:w-1/2 bg-transparent z-10 pr-8 pl-8 md:pt-32 pb-8 pt-32  text-white text-base m-auto h-full ">
                 <div className="overflow-y-auto w-full h-full scroller p-3">
                   <img width="250" src={this.qr} className="m-auto -mt-2" />
                   <ul className="list-disc list-outside">
@@ -98,13 +98,13 @@ class App extends React.Component {
                     </li>
                   </ul>
                   <div className="flex flex-wrap">
-                    <p className="border-b-8 border-red-700 mt-3 pb-3 pt-3 pl-8 pr-8 rounded-lg text-black bg-white text-center m-auto">
+                    <p className="border-b-8 border-red-700 mt-6 pb-3 pt-3 pl-8 pr-8 rounded-lg text-black bg-white text-center m-auto">
                       <span className="text-red-700 mr-4">Room: </span>
                       {window.location.hostname +
                         "/canvas/" +
                         this.props.roomID}
                     </p>
-                    <p className="border-b-8 border-blue-700 pt-3 mt-3 pb-3 pl-4 pr-4 rounded-lg text-black bg-white text-center m-auto">
+                    <p className="border-b-8 border-blue-700 pt-3 mt-6 pb-3 pl-4 pr-4 rounded-lg text-black bg-white text-center m-auto">
                       <span className="text-blue-700 mr-4">Controller: </span>
 
                       {window.location.hostname +
