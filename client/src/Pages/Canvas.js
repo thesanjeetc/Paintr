@@ -93,10 +93,11 @@ class Canvas extends React.Component {
 
   draw() {
     this.drawPointers();
-    this.updatePath();
     if (this.redraw) {
       this.drawPath();
       this.redraw = false;
+    } else {
+      this.updatePath();
     }
     requestAnimationFrame(() => this.draw());
   }
@@ -120,10 +121,6 @@ class Canvas extends React.Component {
 
   updatePath() {
     this.painters.forEach((painter, i) => {
-      if (painter.cleared) {
-        this.socket.emit("resync");
-      }
-
       if (this.lastPos[i] === undefined) {
         this.lastPos[i] = painter.curPos;
       }

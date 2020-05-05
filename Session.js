@@ -92,9 +92,6 @@ class Canvas {
   }
 
   handleSync(data) {
-    for (let [key, value] of Object.entries(this.session.painters)) {
-      value.cleared = false;
-    }
     this.session.sync();
   }
 
@@ -111,7 +108,6 @@ function Painter() {
   this.colour = "";
   this.lastPos = [0, 0];
   this.draw = 0;
-  this.cleared = false;
 }
 
 class Session {
@@ -209,8 +205,7 @@ class Session {
   delete(id) {
     this.paths[id] = [];
     this.painters[id].drawNum = -1;
-    this.painters[id].cleared = true;
-    // this.sync();
+    this.sync();
   }
 
   remove(id) {
