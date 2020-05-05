@@ -17,25 +17,6 @@ class Controller extends React.Component {
         ? "https://paintr-app.sanjeet.co/"
         : window.location.hostname + "/";
 
-    this.socket = io.connect(address + roomID, {
-      query: { room: roomID },
-      reconnection: true,
-      reconnectionDelay: 1000,
-      reconnectionDelayMax: 5000,
-      reconnectionAttempts: Infinity,
-    });
-
-    this.socket.emit("controller");
-
-    if (process.env.NODE_ENV !== "production") {
-      let x = true;
-      setInterval(() => {
-        this.socket.emit("draw", x);
-        x = !x;
-        console.log("DRAW: " + !x);
-      }, 3000);
-    }
-
     try {
       /* eslint-disable no-undef */
       const sensor = new AbsoluteOrientationSensor({
@@ -52,6 +33,26 @@ class Controller extends React.Component {
 
       sensor.addEventListener("reading", (e) => this.readSensor(e));
       sensor.start();
+
+      this.socket = io.connect(address + roomID, {
+        query: { room: roomID },
+        reconnection: true,
+        reconnectionDelay: 1000,
+        reconnectionDelayMax: 5000,
+        reconnectionAttempts: Infinity,
+      });
+
+      this.socket.emit("controller");
+
+      if (process.env.NODE_ENV !== "production") {
+        let x = true;
+        setInterval(() => {
+          this.socket.emit("draw", x);
+          x = !x;
+          console.log("DRAW: " + !x);
+        }, 3000);
+      }
+
       /* eslint-enable no-undef */
     } catch (error) {
       // Handle construction errors.
