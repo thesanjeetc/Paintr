@@ -138,10 +138,10 @@ class Canvas extends React.Component {
         this.pathctx.beginPath();
         this.pathctx.moveTo(...lastPos);
         this.pathctx.lineTo(...curPos);
+
+        this.pathctx.stroke();
       }
     });
-
-    this.pathctx.stroke();
   }
 
   drawPath() {
