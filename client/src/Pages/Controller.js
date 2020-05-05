@@ -32,6 +32,7 @@ class Controller extends React.Component {
       setInterval(() => {
         this.socket.emit("draw", x);
         x = !x;
+        console.log("DRAW: " + !x);
       }, 3000);
     }
 
