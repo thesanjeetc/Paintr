@@ -34,6 +34,10 @@ server.listen(process.env.PORT || 80, () => {
 
 let liveSessions = {};
 
+setInterval(() => {
+  console.log(Object.keys(liveSessions));
+}, 5000);
+
 io.on("connection", (client) => {
   let roomID = client.handshake.query["room"];
   if (liveSessions[roomID] === undefined && roomID !== "") {

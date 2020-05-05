@@ -17,7 +17,7 @@ const routing = (
         component={(props) => <App roomID={props.match.params.id} />}
       />
       <Route
-        path="/controller/:id"
+        path="/control/:id"
         component={(props) => <Controller roomID={props.match.params.id} />}
       />
     </div>

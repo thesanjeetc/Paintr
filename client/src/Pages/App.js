@@ -45,7 +45,7 @@ class App extends React.Component {
       };
     } else {
       this.state = {
-        menu: false,
+        menu: true,
         about: false,
       };
     }
@@ -97,9 +97,21 @@ class App extends React.Component {
                       Share the room link with others, for more fun.
                     </li>
                   </ul>
-                  <p className="p-3 rounded-lg text-black bg-white  mt-6 text-center m-auto">
-                    {window.location.hostname + "/canvas/" + this.props.roomID}
-                  </p>
+                  <div className="flex flex-wrap">
+                    <p className="border-b-8 border-red-700 mt-3 pb-3 pt-3 pl-8 pr-8 rounded-lg text-black bg-white text-center m-auto">
+                      <span className="text-red-700 mr-4">Room: </span>
+                      {window.location.hostname +
+                        "/canvas/" +
+                        this.props.roomID}
+                    </p>
+                    <p className="border-b-8 border-blue-700 pt-3 mt-3 pb-3 pl-4 pr-4 rounded-lg text-black bg-white text-center m-auto">
+                      <span className="text-blue-700 mr-4">Controller: </span>
+
+                      {window.location.hostname +
+                        "/control/" +
+                        this.props.roomID}
+                    </p>
+                  </div>
                   <p
                     className="mt-4 underline cursor-pointer w-16"
                     onClick={() => this.setState({ menu: !this.state.menu })}
