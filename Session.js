@@ -1,6 +1,6 @@
 class Controller {
   constructor(socket, session) {
-    this.depth = 700;
+    this.depth = 800;
 
     this.session = session;
     this.handleConnect(socket);
@@ -84,6 +84,7 @@ class Canvas {
 
   handleConnect(socket) {
     socket.join("canvases");
+    let payload = [];
     socket.emit(
       "sync",
       Object.values(this.session.painters),
