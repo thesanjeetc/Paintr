@@ -1,6 +1,6 @@
 class Controller {
   constructor(socket, session) {
-    this.depth = 600;
+    this.depth = 700;
 
     this.session = session;
     this.handleConnect(socket);
