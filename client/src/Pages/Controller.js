@@ -102,11 +102,12 @@ class Controller extends React.Component {
       }
     });
 
-    if (!this.state.error) {
+    try{
       this.socket.on("colour", (colour) => {
         pickr.setColor(colour);
         document.querySelector("#bar").style.backgroundColor = colour;
       });
+    }catch{}
     }
   }
 
