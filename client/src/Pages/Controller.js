@@ -67,11 +67,11 @@ class Controller extends React.Component {
         this.socket.disconnect();
         if (error.name === "SecurityError") {
           this.setState({
-            error: "Sensor construction was blocked by the Feature Policy.",
+            error: "Sensor access was blocked by the Feature Policy.",
           });
         } else if (error.name === "ReferenceError") {
           this.setState({
-            error: "Sensor is not supported by the User Agent.",
+            error: "The required sensors are not present.",
           });
         } else {
           throw error;
