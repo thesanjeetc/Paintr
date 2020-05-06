@@ -15,10 +15,10 @@ class Canvas extends React.Component {
 
     this.socket = io.connect(address + roomID, {
       query: { room: roomID },
-      reconnection: true,
-      reconnectionDelay: 1000,
-      reconnectionDelayMax: 5000,
-      reconnectionAttempts: Infinity,
+      // reconnection: true,
+      // reconnectionDelay: 1000,
+      // reconnectionDelayMax: 5000,
+      // reconnectionAttempts: Infinity,
     });
 
     this.socket.emit("canvas");
