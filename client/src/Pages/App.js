@@ -25,7 +25,7 @@ class App extends React.Component {
     };
 
     let link =
-      "https://" + window.location.hostname + "/controller/" + props.roomID;
+      "https://" + window.location.hostname + "/control/" + props.roomID;
 
     QRCode.toDataURL(link, options, (err, url) => {
       this.qr = url;
