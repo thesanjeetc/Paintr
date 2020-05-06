@@ -138,7 +138,7 @@ class Session {
 
     setInterval(
       () => this.socket.emit("update", Object.values(this.painters)),
-      60
+      65
     );
 
     socket.on("connection", (client) => {
@@ -148,11 +148,9 @@ class Session {
   }
 
   sync() {
-    this.socket.emit(
-      "sync",
-      Object.values(this.painters),
-      Object.values(this.paths)
-    );
+    this.socket
+      .to("canvases")
+      .emit("sync", Object.values(this.painters), Object.values(this.paths));
   }
 
   create(id) {
