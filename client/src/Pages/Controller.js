@@ -17,55 +17,15 @@ class Controller extends React.Component {
         ? "https://airscribe.herokuapp.com/"
         : window.location.hostname + "/";
 
-    try {
-      /* eslint-disable no-undef */
-      const sensor = new AbsoluteOrientationSensor({
-        frequency: 18,
-      });
-      sensor.addEventListener("error", (event) => {
-        this.socket.disconnect();
+    this.socket = io.connect(address + roomID, {
+      query: { room: roomID },
+      // reconnection: true,
+      // reconnectionDelay: 1000,
+      // reconnectionDelayMax: 5000,
+      // reconnectionAttempts: Infinity,
+    });
 
-        if (event.error.name === "NotAllowedError") {
-          this.setState({ error: "Permission to access sensor was denied." });
-        } else if (event.error.name === "NotReadableError") {
-          this.setState({ error: "Cannot connect to the sensor." });
-        }
-      });
-
-      sensor.addEventListener("reading", (e) => this.readSensor(e));
-      sensor.start();
-
-      this.socket = io.connect(address + roomID, {
-        query: { room: roomID },
-        // reconnection: true,
-        // reconnectionDelay: 1000,
-        // reconnectionDelayMax: 5000,
-        // reconnectionAttempts: Infinity,
-      });
-
-      this.socket.emit("controller");
-
-      if (process.env.NODE_ENV !== "production") {
-        let x = true;
-        setInterval(() => {
-          this.socket.emit("draw", x);
-          x = !x;
-          console.log("DRAW: " + !x);
-        }, 3000);
-      }
-
-      /* eslint-enable no-undef */
-    } catch (error) {
-      if (error.name === "SecurityError") {
-        this.setState({
-          error: "Sensor construction was blocked by the Feature Policy.",
-        });
-      } else if (error.name === "ReferenceError") {
-        this.setState({ error: "Sensor is not supported by the User Agent." });
-      } else {
-        throw error;
-      }
-    }
+    this.socket.emit("controller");
   }
 
   readSensor(e) {
@@ -74,6 +34,51 @@ class Controller extends React.Component {
   }
 
   componentDidMount() {
+    if (!this.state.error) {
+      try {
+        /* eslint-disable no-undef */
+        const sensor = new AbsoluteOrientationSensor({
+          frequency: 18,
+        });
+        sensor.addEventListener("error", (event) => {
+          this.socket.disconnect();
+
+          if (event.error.name === "NotAllowedError") {
+            this.setState({ error: "Permission to access sensor was denied." });
+          } else if (event.error.name === "NotReadableError") {
+            this.setState({ error: "Cannot connect to the sensor." });
+          }
+        });
+
+        sensor.addEventListener("reading", (e) => this.readSensor(e));
+        sensor.start();
+
+        if (process.env.NODE_ENV !== "production") {
+          let x = true;
+          setInterval(() => {
+            this.socket.emit("draw", x);
+            x = !x;
+            console.log("DRAW: " + !x);
+          }, 3000);
+        }
+
+        /* eslint-enable no-undef */
+      } catch (error) {
+        this.socket.disconnect();
+        if (error.name === "SecurityError") {
+          this.setState({
+            error: "Sensor construction was blocked by the Feature Policy.",
+          });
+        } else if (error.name === "ReferenceError") {
+          this.setState({
+            error: "Sensor is not supported by the User Agent.",
+          });
+        } else {
+          throw error;
+        }
+      }
+    }
+
     const pickr = Pickr.create({
       el: "#bar",
       theme: "monolith", // or 'monolith', or 'nano'
@@ -102,12 +107,12 @@ class Controller extends React.Component {
       }
     });
 
-    try {
-      this.socket.on("colour", (colour) => {
+    this.socket.on("colour", (colour) => {
+      if (!this.state.error) {
         pickr.setColor(colour);
         document.querySelector("#bar").style.backgroundColor = colour;
-      });
-    } catch {}
+      }
+    });
   }
 
   render() {
