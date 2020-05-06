@@ -23,7 +23,8 @@ class Controller extends React.Component {
         frequency: 40,
       });
       sensor.addEventListener("error", (event) => {
-        // Handle runtime errors.
+        this.socket.disconnect();
+
         if (event.error.name === "NotAllowedError") {
           this.setState({ error: "Permission to access sensor was denied." });
         } else if (event.error.name === "NotReadableError") {
@@ -36,10 +37,10 @@ class Controller extends React.Component {
 
       this.socket = io.connect(address + roomID, {
         query: { room: roomID },
-        reconnection: true,
-        reconnectionDelay: 1000,
-        reconnectionDelayMax: 5000,
-        reconnectionAttempts: Infinity,
+        // reconnection: true,
+        // reconnectionDelay: 1000,
+        // reconnectionDelayMax: 5000,
+        // reconnectionAttempts: Infinity,
       });
 
       this.socket.emit("controller");
@@ -55,7 +56,6 @@ class Controller extends React.Component {
 
       /* eslint-enable no-undef */
     } catch (error) {
-      // Handle construction errors.
       if (error.name === "SecurityError") {
         this.setState({
           error: "Sensor construction was blocked by the Feature Policy.",
@@ -92,18 +92,18 @@ class Controller extends React.Component {
       if (!this.state.error) {
         let currColor = "#" + pickr.getColor().toHEXA().join("");
         document.querySelector("#bar").style.backgroundColor = currColor;
+      }
+    });
+
+    pickr.on("changestop", (instance) => {
+      if (!this.state.error) {
+        let currColor = "#" + pickr.getColor().toHEXA().join("");
         this.socket.emit("colour", currColor);
       }
     });
 
-    // pickr.on("hide", (instance) => {
-    //   let currColor = "#" + pickr.getColor().toHEXA().join("");
-    //   this.socket.emit("colour", currColor);
-    // });
-
     this.socket.on("colour", (colour) => {
       if (!this.state.error) {
-        console.log(colour);
         pickr.setColor(colour);
         document.querySelector("#bar").style.backgroundColor = colour;
       }
