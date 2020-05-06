@@ -45,7 +45,7 @@ class App extends React.Component {
       };
     } else {
       this.state = {
-        menu: true,
+        menu: false,
         about: false,
       };
     }

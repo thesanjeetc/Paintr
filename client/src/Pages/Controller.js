@@ -20,7 +20,7 @@ class Controller extends React.Component {
     try {
       /* eslint-disable no-undef */
       const sensor = new AbsoluteOrientationSensor({
-        frequency: 16,
+        frequency: 18,
       });
       sensor.addEventListener("error", (event) => {
         this.socket.disconnect();

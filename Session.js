@@ -139,7 +139,7 @@ class Session {
 
     setInterval(
       () => this.socket.emit("update", Object.values(this.painters)),
-      60
+      55
     );
 
     socket.on("connection", (client) => {
