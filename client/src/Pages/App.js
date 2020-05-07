@@ -7,6 +7,7 @@ import Icon from "./Icons/paintrIcon.png";
 import Paintr from "./Icons/paintrMain.png";
 import InfoIcon from "./Icons/info.png";
 import CoffeeIcon from "./Icons/coffee.png";
+import TwitterIcon from "./Icons/twitter.png";
 import QRCode from "qrcode";
 
 class App extends React.Component {
@@ -181,6 +182,13 @@ class App extends React.Component {
                 </div>
               </div>
             )}
+            <div className="m-auto block absolute z-10 bottom-0 right-0 mr-4 md:mb-32 md:mr-20 menuButton ">
+              <a href="https://www.twitter.com/thesanjeetc">
+                <div className="rounded-full p-4 mr-2 mb-32 md:mb-12 twitterButton">
+                  <img src={TwitterIcon} width="30" className="m-auto" />
+                </div>
+              </a>
+            </div>
             <div className="m-auto block absolute z-10 bottom-0 right-0 mr-4 md:mb-16 md:mr-20 menuButton ">
               <a href="https://www.buymeacoffee.com/thesanjeetc">
                 <div className="rounded-full p-2 mr-2 mb-10 md:mb-8 coffeeButton">

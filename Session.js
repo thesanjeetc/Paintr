@@ -147,7 +147,9 @@ class Session {
       50
     );
 
-    setTimeout(() => this.close(), 1200000);
+    if (process.env.NODE_ENV === "production") {
+      setTimeout(() => this.close(), 1200000);
+    }
 
     socket.on("connection", (client) => {
       client.on("controller", () => new Controller(client, this));
