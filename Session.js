@@ -119,6 +119,11 @@ class Session {
     this.painters = {};
     this.paths = {};
 
+    // Object.entries(socket.nsp.sockets).map(([id, s]) => {
+    //   s.disconnect();
+    // });
+    // console.log(Object.keys(socket.nsp.sockets).length);
+
     this.colours = [
       "#f44336",
       "#E91E63",
@@ -139,8 +144,10 @@ class Session {
 
     setInterval(
       () => this.socket.emit("update", Object.values(this.painters)),
-      55
+      50
     );
+
+    setTimeout(() => this.close(), 1200000);
 
     socket.on("connection", (client) => {
       client.on("controller", () => new Controller(client, this));
@@ -218,6 +225,13 @@ class Session {
     if (Object.keys(this.socket.connected).length === 0) {
       this.kill();
     }
+  }
+
+  close() {
+    Object.entries(this.socket.sockets).map(([id, s]) => {
+      s.disconnect();
+    });
+    this.kill();
   }
 }
 

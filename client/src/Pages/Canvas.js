@@ -87,6 +87,12 @@ class Canvas extends React.Component {
       this.painters = painters;
     });
 
+    this.socket.on("disconnect", () => {
+      alert(
+        "Your session has ended. Please reload this page and reconnect your controller to continue."
+      );
+    });
+
     this.draw();
   }
 

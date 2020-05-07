@@ -24,7 +24,7 @@ const myCustomLevels = {
   colors: {
     "Num. Sessions": "red",
     "Latest Sessions": "blue",
-    Connected: "green",
+    Connected: "yellow",
   },
 };
 
@@ -47,14 +47,14 @@ server.listen(process.env.PORT || 80);
 
 let liveSessions = {};
 
-setInterval(() => {
-  logger.log("Connected", io.eio.clientsCount);
-  logger.log("Num. Sessions", Object.keys(liveSessions).length);
-  logger.log(
-    "Latest Sessions",
-    " " + Object.keys(liveSessions).slice(0).slice(-8)
-  );
-}, 3000);
+// setInterval(() => {
+//   logger.log("Connected", io.eio.clientsCount);
+//   logger.log("Num. Sessions", Object.keys(liveSessions).length);
+//   logger.log(
+//     "Latest Sessions",
+//     " " + Object.keys(liveSessions).slice(0).slice(-8)
+//   );
+// }, 3000);
 
 io.on("connection", (client) => {
   let roomID = client.handshake.query["room"];
