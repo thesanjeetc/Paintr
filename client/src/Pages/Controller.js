@@ -14,7 +14,7 @@ class Controller extends React.Component {
 
     let address =
       process.env.NODE_ENV === "production"
-        ? "https://airscribe.herokuapp.com/"
+        ? "http://paintr-app.sanjeet.co/"
         : window.location.hostname + "/";
 
     this.socket = io.connect(address + roomID, {

@@ -10,7 +10,7 @@ class Canvas extends React.Component {
 
     let address =
       process.env.NODE_ENV === "production"
-        ? "https://airscribe.herokuapp.com/"
+        ? "http://paintr-app.sanjeet.co/"
         : window.location.hostname + "/";
 
     this.socket = io.connect(address + roomID, {
@@ -87,11 +87,11 @@ class Canvas extends React.Component {
       this.painters = painters;
     });
 
-    // this.socket.on("disconnect", () => {
-    //   alert(
-    //     "Your session has ended. Please reload this page and reconnect your controller to continue."
-    //   );
-    // });
+    this.socket.on("disconnect", () => {
+      alert(
+        "Your session has ended. Please reload this page and reconnect your controller to continue."
+      );
+    });
 
     this.draw();
   }
