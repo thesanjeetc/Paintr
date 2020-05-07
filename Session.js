@@ -119,11 +119,6 @@ class Session {
     this.painters = {};
     this.paths = {};
 
-    // Object.entries(socket.nsp.sockets).map(([id, s]) => {
-    //   s.disconnect();
-    // });
-    // console.log(Object.keys(socket.nsp.sockets).length);
-
     this.colours = [
       "#f44336",
       "#E91E63",
@@ -144,7 +139,7 @@ class Session {
 
     setInterval(
       () => this.socket.emit("update", Object.values(this.painters)),
-      55
+      50
     );
 
     if (process.env.NODE_ENV === "production") {
@@ -230,6 +225,8 @@ class Session {
   }
 
   close() {
+    this.painters = {};
+    this.paths = {};
     Object.entries(this.socket.sockets).map(([id, s]) => {
       s.disconnect();
     });
