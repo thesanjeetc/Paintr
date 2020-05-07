@@ -182,16 +182,16 @@ class App extends React.Component {
                 </div>
               </div>
             )}
-            <div className="m-auto block absolute z-10 bottom-0 right-0 mr-4 md:mb-32 md:mr-20 menuButton ">
+            <div className="m-auto block absolute z-10 bottom-0 right-0 mr-4 md:mb-24 md:mr-20 menuButton ">
               <a href="https://www.twitter.com/thesanjeetc">
                 <div className="rounded-full p-4 mr-2 mb-32 md:mb-12 twitterButton">
                   <img src={TwitterIcon} width="30" className="m-auto" />
                 </div>
               </a>
             </div>
-            <div className="m-auto block absolute z-10 bottom-0 right-0 mr-4 md:mb-16 md:mr-20 menuButton ">
+            <div className="m-auto block absolute z-10 bottom-0 right-0 mr-4 md:mb-12 md:mr-20 menuButton ">
               <a href="https://www.buymeacoffee.com/thesanjeetc">
-                <div className="rounded-full p-2 mr-2 mb-10 md:mb-8 coffeeButton">
+                <div className="rounded-full p-2 mr-2 mb-10 md:mb-4 coffeeButton">
                   <img src={CoffeeIcon} className=" w-12 m-auto" />
                 </div>
               </a>

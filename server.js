@@ -46,11 +46,12 @@ app.get("*", (req, res) => {
 server.listen(process.env.PORT || 80);
 
 let liveSessions = {};
+let numSessions = 0;
 
-if (process.env.NODE_ENV === "production") {
+if (process.env.NODE_ENV !== "production") {
   setInterval(() => {
     logger.log("Connected", io.eio.clientsCount);
-    logger.log("Num. Sessions", Object.keys(liveSessions).length);
+    logger.log("Num. Sessions", numSessions);
     logger.log(
       "Latest Sessions",
       " " + Object.keys(liveSessions).slice(0).slice(-8)
@@ -61,11 +62,13 @@ if (process.env.NODE_ENV === "production") {
 io.on("connection", (client) => {
   let roomID = client.handshake.query["room"];
   if (liveSessions[roomID] === undefined && roomID !== "") {
+    numSessions += 1;
     let sessionSocket = io.of("/" + roomID);
     liveSessions[roomID] = new Session(sessionSocket, roomID, () => {
       sessionSocket.removeAllListeners();
       delete io.nsps["/" + roomID];
       delete liveSessions[roomID];
+      numSessions -= 1;
     });
   }
 });
