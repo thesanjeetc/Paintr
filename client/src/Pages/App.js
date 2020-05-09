@@ -14,24 +14,6 @@ class App extends React.Component {
   constructor(props) {
     super(props);
 
-    if (props.roomID === undefined) {
-      let newRoom = Math.random().toString(16).substr(2, 6);
-      props.history.push("/canvas/" + newRoom);
-    }
-
-    let options = {
-      color: { dark: "#fff", light: "#00000000" },
-      width: 300,
-      height: 300,
-    };
-
-    let link =
-      "https://" + window.location.hostname + "/control/" + props.roomID;
-
-    QRCode.toDataURL(link, options, (err, url) => {
-      this.qr = url;
-    });
-
     if (localStorage.getItem("visited") === null) {
       localStorage.setItem("visited", "1");
       this.state = {
@@ -50,6 +32,25 @@ class App extends React.Component {
         about: false,
       };
     }
+
+    if (props.roomID === undefined) {
+      let newRoom = Math.random().toString(16).substr(2, 6);
+      props.history.push("/canvas/" + newRoom);
+      localStorage.removeItem("visited");
+    }
+
+    let options = {
+      color: { dark: "#fff", light: "#00000000" },
+      width: 300,
+      height: 300,
+    };
+
+    let link =
+      "https://" + window.location.hostname + "/control/" + props.roomID;
+
+    QRCode.toDataURL(link, options, (err, url) => {
+      this.qr = url;
+    });
   }
 
   render() {
