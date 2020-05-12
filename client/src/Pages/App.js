@@ -98,6 +98,17 @@ class App extends React.Component {
                     <li className="mt-4 ml-2">
                       Share the room link with others, for more fun.
                     </li>
+                    <li className="mt-4 ml-2">
+                      NOTE: As the Generic Sensor API is relatively new, iOS is
+                      not currently{" "}
+                      <a
+                        className="pointer underline"
+                        href="https://developer.mozilla.org/en-US/docs/Web/API/AbsoluteOrientationSensor#Browser_compatibility"
+                      >
+                        supported
+                      </a>
+                      .
+                    </li>
                   </ul>
                   <div className="flex flex-wrap">
                     <p className="border-b-8 border-red-700 mt-6 pb-3 pt-3 pl-8 pr-8 rounded-lg text-black bg-white text-center m-auto">

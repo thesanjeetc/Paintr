@@ -115,13 +115,46 @@ class Controller extends React.Component {
     });
   }
 
+  checkIOS() {
+    var iDevices = [
+      "iPad Simulator",
+      "iPhone Simulator",
+      "iPod Simulator",
+      "iPad",
+      "iPhone",
+      "iPod",
+    ];
+
+    if (!!navigator.platform) {
+      console.log(navigator.platform);
+      while (iDevices.length) {
+        if (navigator.platform === iDevices.pop()) {
+          return true;
+        }
+      }
+    }
+
+    return false;
+  }
+
   render() {
     if (this.state.error) {
       return (
-        <div className="text-white flex w-screen h-screen">
-          <p className="m-auto text-2xl p-4 bg-red-800 rounded-lg">
+        <div className="text-white  w-screen h-screen flex flex-wrap p-12">
+          <p className="m-auto text-2xl p-4 bg-red-800 inline rounded-lg">
             {this.state.error}
           </p>
+          {this.checkIOS() && (
+            <p className="m-auto inline">
+              As the Generic Sensor API is relatively new, iOS is not currently{" "}
+              <a
+                className="pointer underline"
+                href="https://developer.mozilla.org/en-US/docs/Web/API/AbsoluteOrientationSensor#Browser_compatibility"
+              >
+                supported.
+              </a>
+            </p>
+          )}
         </div>
       );
     } else {
