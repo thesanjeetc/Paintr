@@ -58,6 +58,7 @@ class App extends React.Component {
       return (
         <div className="flex flex-wrap w-screen h-screen overflow-hidden">
           <Canvas roomID={this.props.roomID} />
+
           <div className="w-screen h-screen fixed z-50 flex bg-transparent overflow-hidden">
             <div className="text-white absolute sm:p-12 ">
               <div className="imgCont">
@@ -208,6 +209,20 @@ class App extends React.Component {
                 </div>
               </a>
             </div>
+          </div>
+          <div className="bottom-0 absolute mb-8 ml-16 hidden sm:block z-50">
+            <a
+              href="https://www.producthunt.com/posts/paintr-2?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-paintr-2"
+              target="_blank"
+            >
+              <img
+                src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=199172&theme=dark"
+                alt="Paintr - Painting with your smartphone. | Product Hunt Embed"
+                style={{ width: "210px", height: "54px" }}
+                width="210px"
+                height="54px"
+              />
+            </a>
           </div>
         </div>
       );
