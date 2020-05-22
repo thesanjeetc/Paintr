@@ -139,7 +139,7 @@ class Session {
 
     setInterval(
       () => this.socket.emit("update", Object.values(this.painters)),
-      50
+      17
     );
 
     if (process.env.NODE_ENV === "production") {

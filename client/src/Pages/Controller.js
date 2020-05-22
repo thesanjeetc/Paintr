@@ -14,7 +14,7 @@ class Controller extends React.Component {
 
     let address =
       process.env.NODE_ENV === "production"
-        ? "https://paintr-app.sanjeet.co/"
+        ? "https://airscribe.herokuapp.com/"
         : window.location.hostname + "/";
 
     this.socket = io.connect(address + roomID, {
@@ -38,7 +38,7 @@ class Controller extends React.Component {
       try {
         /* eslint-disable no-undef */
         const sensor = new AbsoluteOrientationSensor({
-          frequency: 21,
+          frequency: 60,
         });
         sensor.addEventListener("error", (event) => {
           this.socket.disconnect();

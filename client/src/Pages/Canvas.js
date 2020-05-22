@@ -10,7 +10,7 @@ class Canvas extends React.Component {
 
     let address =
       process.env.NODE_ENV === "production"
-        ? "https://paintr-app.sanjeet.co/"
+        ? "https://airscribe.herokuapp.com/"
         : window.location.hostname + "/";
 
     this.socket = io.connect(address + roomID, {
