@@ -195,14 +195,14 @@ class App extends React.Component {
                 </div>
               </div>
             )}
-            <div className="m-auto block absolute z-10 bottom-0 right-0 mr-4 md:mb-24 md:mr-20 menuButton ">
+            <div className="m-auto block absolute z-10 bottom-0 right-0 mr-4 md:mb-20 md:mr-20 menuButton ">
               <a href="https://www.twitter.com/thesanjeetc">
                 <div className="rounded-full p-4 mr-2 mb-32 md:mb-12 twitterButton">
                   <img src={TwitterIcon} width="30" className="m-auto" />
                 </div>
               </a>
             </div>
-            <div className="m-auto block absolute z-10 bottom-0 right-0 mr-4 md:mb-12 md:mr-20 menuButton ">
+            <div className="m-auto block absolute z-10 bottom-0 right-0 mr-4 md:mb-8 md:mr-20 menuButton ">
               <a href="https://www.buymeacoffee.com/thesanjeetc">
                 <div className="rounded-full p-2 mr-2 mb-10 md:mb-4 coffeeButton">
                   <img src={CoffeeIcon} className=" w-12 m-auto" />
@@ -210,7 +210,7 @@ class App extends React.Component {
               </a>
             </div>
           </div>
-          <div className="bottom-0 absolute mb-8 ml-16 hidden sm:block z-50">
+          <div className="bottom-0 absolute mb-12 ml-20 hidden sm:block z-50">
             <a
               href="https://www.producthunt.com/posts/paintr-2?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-paintr-2"
               target="_blank"
