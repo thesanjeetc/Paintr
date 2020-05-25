@@ -152,7 +152,7 @@ class App extends React.Component {
                     carry around in our pockets.
                   </p>
                   <p className="mt-4">
-                    Try it out now. Press the help button. Scan the QR code. And
+                    Try it out now. Press the menu button. Scan the QR code. And
                     you're in! Paintr supports multiple controllers and screens
                     so share the room link with friends. Or perhaps cast the tab
                     to the big screen. It's quite flexible and really cool.
