@@ -144,7 +144,7 @@ class App extends React.Component {
                     Paintr is a digital canvas on which everyone can paint on,
                     with their phone. That's right - with a built in inertial
                     measurement unit in almost every phone, Paintr brings
-                    control and flexibility back to your hands.
+                    control and flexibility back to your hands. Here's a&nbsp;<a href="https://www.youtube.com/watch?v=s62hUhh05_c" className="underline">demo</a>.
                   </p>
                   <p className="mt-4">
                     I created this as an experiment to explore a more intuitive
