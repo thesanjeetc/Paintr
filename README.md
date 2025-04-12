@@ -11,7 +11,7 @@ Paintr is a collaborative digital canvas where your smartphone becomes your pain
     <img src="https://github.com/user-attachments/assets/6fad4f05-3089-4241-893b-26226538e5b0" width="600"/></td>
   </td>
   <td>
-    <img src="https://github.com/user-attachments/assets/b16b83a2-8549-4abb-9409-cc749f92c6d0" height="240"/></td>
+    <img src="https://github.com/user-attachments/assets/b16b83a2-8549-4abb-9409-cc749f92c6d0" width="600"/></td>
   </td>
 </tr>
 </table>
